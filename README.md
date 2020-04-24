@@ -9,4 +9,8 @@ must then navigate this Cathedral fighting or escaping monsters that are everywh
 items and equipment throughout the cathedral to help in their escape. Puzzles will also be scattered and
 solving them will reward the player with items and equipment. The goal is to escape while refiguring
 what is happening in the cathedral.
-# Commands
+
+##Layout
+(blob/master/topfloor.PNG)
+
+
