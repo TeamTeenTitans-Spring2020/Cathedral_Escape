@@ -1,0 +1,18 @@
+1;Torture Room;A room with very few candles to bring out an eerie orange hue to all the surrounding toture tools around. You look around with anxiety and confusion as you wonder what dragged you all the way to this room.;0;0;0;2;0
+2;Hallway;A long hallway with a few rooms and stairs connected to it. You hear a dripping sound the further in you go;10;1;3;0;0
+10;Stairs;You see stairs going to the first floor;0;0;2;16;0;;0
+3;Master Bedroom;Upon arrival, you notice a large four poster bed that looks to be double the size of a king-sized bed. The unnaturally large bed looks as if it could be used to hide something enormous. As your attention is focused entirely on the bed, you feel something warm and wet scamper past your legs very quickly causing you to fall flat on your butt.;2;0;0;0;5
+11;Stairs;You see stairs going to the second floor;0;0;8;0;0
+12;Stairs;You see stairs going to the first floor;0;0;0;15;0
+8;Hallway;As you enter the hallways you notice a pungent stench and bones stained yellow and dark red scattered throughout the hall.;11;0;15;9;0
+9;Dining Hall;A glamorous chandelier shines brilliantly over an old rustic table with broken chairs laying on their sides next to the table.;0;8;0;0;0;3
+15;Corridor;The room has a draft coming up from the stairs that compels you to continue exploring throughout the house;8;11;0;0;0;0
+16;Large Corridor;A dozen statues stand or kneel in this room, and each one lacks a head and stands in a posture of action or defense. All are garbed for battle. the metal parts of their weapons and armor have been rusted to the point of being unrecognizable.;0;0;0;24;15
+18;Bathroom; A wall that holds a seat with a hole in it is in this chamber. It's a toilet! The gruesome stench from the hole leads you to believe that this toilet sees regular use. The seat is outlined by what looks like human bones.;0;0;16;19;12;0
+19;Bathroom;This appears to be another bathroom, but it seems to be in pristine condition. Something shiny appears from underneath the toilet.;0;18;16;0;0;6
+23;Storage Room;In this room you notice swords, axes, bowes, lances stacked piles high. Each one looks as if they had their fair share of use.;24;0;0;0;5;0
+24;Stairs;Corpses and pieces of corpses hang from hooks that dangle from chains attached to thick iron rings above a flight of stairs.. Most appear humanoid but a few of the body parts appear more monstrous;0;16;23;0;0;0;0
+25;Stairs;At the bottom of the stairs, you realize that the hanging corpses don’t have any innards as if they were intentionally gutted and hung on the walls;0;0;0;26;0;0
+26;Servant Quarters;Burning torches line the walls of this room;31;25;0;28;7
+28;Hallway;Gray smoke wafts up from braziers made of skills set around the edges of the rooms.0;26;0;0;0;0
+31;Cathedral;A 30-foot-tall demonic idol dominates this room of black stone. The potbellied statue is made of red stone, and its grinning face holds what looks to be two large rubies in place of eyes. A fire burns merrily in a wide brazier the idol holds in its lap.;26;0;0;0;0;0
