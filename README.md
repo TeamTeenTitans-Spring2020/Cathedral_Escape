@@ -11,6 +11,6 @@ solving them will reward the player with items and equipment. The goal is to esc
 what is happening in the cathedral.
 
 ##Layout
-![Top Floor] (blob/master/topfloor.PNG)
+![Top Floor] (topfloor.PNG)
 
 
