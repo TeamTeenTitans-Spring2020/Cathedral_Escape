@@ -11,6 +11,8 @@ solving them will reward the player with items and equipment. The goal is to esc
 what is happening in the cathedral.
 
 ##Layout
-![Top Floor] (topfloor.PNG)
+
+
+![Top Floor] (https://raw.githubusercontent.com/TeamTeenTitans-Spring2020/Cathedral_Escape/master/topfloor.PNG)
 
 
