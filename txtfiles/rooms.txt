@@ -1,6 +1,6 @@
 1;Torture Room;A room with very few candles to bring out an eerie orange hue to all the surrounding toture tools around. You look around with anxiety and confusion as you wonder what dragged you all the way to this room.;0;0;0;2;0
 2;Hallway;A long hallway with a few rooms and stairs connected to it. You hear a dripping sound the further in you go;10;1;3;0;0
-10;Stairs;You see stairs going to the first floor;0;0;2;16;0;;0
+10;Stairs;You see stairs going to the first floor;0;0;2;16;0;0;0
 3;Master Bedroom;Upon arrival, you notice a large four poster bed that looks to be double the size of a king-sized bed. The unnaturally large bed looks as if it could be used to hide something enormous. As your attention is focused entirely on the bed, you feel something warm and wet scamper past your legs very quickly causing you to fall flat on your butt.;2;0;0;0;5
 11;Stairs;You see stairs going to the second floor;0;0;8;0;0
 12;Stairs;You see stairs going to the first floor;0;0;0;15;0
