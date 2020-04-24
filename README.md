@@ -10,9 +10,22 @@ items and equipment throughout the cathedral to help in their escape. Puzzles wi
 solving them will reward the player with items and equipment. The goal is to escape while refiguring
 what is happening in the cathedral.
 
-##Layout
+## Layout
 
+### Top Floor
 ![Top Floor](https://raw.githubusercontent.com/TeamTeenTitans-Spring2020/Cathedral_Escape/master/topfloor.PNG).
+
+
+### Second Floor
+![Second Floor](https://raw.githubusercontent.com/TeamTeenTitans-Spring2020/Cathedral_Escape/master/secondfloor.PNG).
+
+
+### First Floor
+![First Floor](https://raw.githubusercontent.com/TeamTeenTitans-Spring2020/Cathedral_Escape/master/1stfloor.PNG).
+
+
+### Basement
+![Top Floor](https://raw.githubusercontent.com/TeamTeenTitans-Spring2020/Cathedral_Escape/master/basement.PNG).
 
 
 
