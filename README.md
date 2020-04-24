@@ -12,7 +12,7 @@ what is happening in the cathedral.
 
 ##Layout
 
+![Top Floor](https://raw.githubusercontent.com/TeamTeenTitans-Spring2020/Cathedral_Escape/master/topfloor.PNG).
 
-![Top Floor] (https://raw.githubusercontent.com/TeamTeenTitans-Spring2020/Cathedral_Escape/master/topfloor.PNG)
 
 
