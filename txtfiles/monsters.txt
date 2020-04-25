@@ -1,0 +1,8 @@
+1;Human Skeleton;The reanimated bones of once-living Humans are a type of derived undead. Either way, they are considerably slower, stupider, and clumsier than when they were alive.;
+Top Floor:15% (not starting room)
+2nd Floor 20%;Small health potion;.10
+2;Undead Hound;The rotten reanimated body of a dog, its red eyes beam with madness as its saliva drools down its teeth;Top Floor (not Starting room) 10%
+2nd Floor: 20%
+Room ID 8: 100%;Small health potion,.25
+3;Zombie;The rotten undead reanimated corpse shambles about in a jerky, uneven gait without fear or hesitation. Drawn from the grave, half decayed and partially consumed by worms, it wears the tattered moldering remains of its burial clothes. A rank odor of death and decay hangs heavy in the air.;2nd Floor: 15%;Small health potion;.50
+4;Vampire Queen;A beautiful face with piercing red eyes looks at you with a slight smile.;Room ID: 31 100%;Front Door Key;.100
