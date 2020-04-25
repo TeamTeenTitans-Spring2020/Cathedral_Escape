@@ -1,0 +1,3 @@
+3;9;There was a plane crash every single person died. Who survived?;With this ring, I thee wed; married couples. wives. husbands;5, skeleton key;-6
+6;19;What do you call a bear without an ear?;This has more to do with the word itself than the animal.;b, a b, a "b"; +2 itemID:14;-2
+7;26;They have no flesh, nor feathers, nor scales, nor bone. Yet they have fingers and thumbs of their own. What are they?;You wear them.;0 itemID:10;You trip and lose the first item in your inventory.
