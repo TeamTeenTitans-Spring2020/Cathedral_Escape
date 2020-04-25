@@ -28,4 +28,11 @@ what is happening in the cathedral.
 ![Top Floor](https://raw.githubusercontent.com/TeamTeenTitans-Spring2020/Cathedral_Escape/master/basement.PNG).
 
 
+## Navigation Commands
+| Nav Command | Description                                              |
+| ----------- | -----------                                              |
+| North/N     | Takes player to north of the current room if available   |
+| South/S     | Takes player to south of the current room if available   |
+| East/E      | Takes player to east of the current room if available    |
+| West/W      | Takes player to west of the current room if available    |
 
