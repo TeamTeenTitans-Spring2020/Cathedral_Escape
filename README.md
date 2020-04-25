@@ -28,11 +28,19 @@ what is happening in the cathedral.
 ![Top Floor](https://raw.githubusercontent.com/TeamTeenTitans-Spring2020/Cathedral_Escape/master/basement.PNG).
 
 
-## Navigation Commands
-| Nav Command | Description                                              |
-| ----------- | -----------                                              |
-| North/N     | Takes player to north of the current room if available   |
-| South/S     | Takes player to south of the current room if available   |
-| East/E      | Takes player to east of the current room if available    |
-| West/W      | Takes player to west of the current room if available    |
+## Game Commands
+| Command           | Description                                                                                                |
+| -----------       | -----------                                                                                                |
+| North/N           | Takes player to north of the current room if available                                                     |
+| South/S           | Takes player to south of the current room if available                                                     |
+| East/E            | Takes player to east of the current room if available                                                      |
+| West/W            | Takes player to west of the current room if available                                                      |
+| Save game         | The game session will be saved                                                                             |
+| Explore room      | Player will be able to if there are items, puzzles, or monsters in the current room                        |
+| Quit              | Player will be taken to the starting screen                                                                |
+| Try again         | Player will be taken to the last saving point                                                              |
+| Grab(item-name)   | Item will be added to player's inventory                                                                   |
+| Drop(item-name)   | Item is moved from player's inventory to the current room's inventory                                      |
+| Equip(item-name)  | Item's stats is added to the current player's stats                                                        |
+| Use(item-name)    | If item is in the player's inventory and a consumable, the item will be applied                                                                        |
 
