@@ -64,8 +64,9 @@ public class Main {
 			Monster monster;
 			boolean itemUsed = false;
 			
+			player.enterRoom(currentRoom, db, m.input);
 			//BOOKMARK TO DO
-			//Get rid of this??? Already have it in EnterRoom???
+			//Get rid of this??? Already have it in player.EnterRoom???
 			if(roomInt != prevRoomInt)
 			{
 				//System.out.println(currentRoom.getRoomDescription());
@@ -82,79 +83,71 @@ public class Main {
 			//if(!currentRoom.getPuzzle().isSolved())
 			if(!(currentRoom.getPuzzle() == null))
 			{
-				Puzzle puzzle = currentRoom.getPuzzle();
-				//System.out.println(puzzle.getDescription());
-				System.out.println(puzzle.getPuzzlePrompt());
-				int attempts = 3;
-				String[] solution = puzzle.getPuzzleSolution();
-				HashMap<String, String> solMap = new HashMap<String, String>();
-				for(String line : solution)
+				if(!currentRoom.getPuzzle().isSolved())
 				{
-					solMap.put(line, line);
-				}
-				do
-				{
-					System.out.print("> ");
-					String puzzleCommand = m.input.nextLine();
-					if(puzzleCommand.equalsIgnoreCase(solMap.get(puzzleCommand)))
+					Puzzle puzzle = currentRoom.getPuzzle();
+					//System.out.println(puzzle.getDescription());
+					System.out.println(puzzle.getPuzzlePrompt());
+					int attempts = 3;
+					String[] solution = puzzle.getPuzzleSolution();
+					HashMap<String, String> solMap = new HashMap<String, String>();
+					for(String line : solution)
 					{
-						System.out.println("You are right! You have been rewarded.");
-						attempts = 0;
-						puzzle.setSolved(true);
-						db.getPuzzleList().put(puzzle.getItemID(), puzzle);
-						db.getRoomList().put(currentRoom.getRoomID(), currentRoom);
-						if(puzzle.getPuzzleReward() != 0)
-						{
-							player.setHp(player.getHp() + puzzle.getPuzzleReward());
-							System.out.println("You have been healed for " + puzzle.getPuzzleReward() + " HP. You now have " + player.getHp());
-						}
-						else
-						{
-							System.out.println("A " + puzzle.getItem().getItemName() + " has been added to your inventory!");
-							player.addItem(puzzle.getItem());
-						}
+						solMap.put(line, line);
 					}
-					else if(puzzleCommand.equalsIgnoreCase("ignore"))
+					do
 					{
-						System.out.println("You ignored the puzzle");
-						puzzle.setSolved(true);
-						attempts = 0;
-						db.getPuzzleList().put(puzzle.getItemID(), puzzle);
-						db.getRoomList().put(currentRoom.getRoomID(), currentRoom);
-					}
-					else
-					{
-						
-						attempts -= 1;
-						if(attempts > 0)
+						System.out.print("> ");
+						String puzzleCommand = m.input.nextLine();
+						if(puzzleCommand.equalsIgnoreCase(solMap.get(puzzleCommand)))
 						{
-							System.out.println("The answer you provided is wrong. Try again or 'Ignore'. You still have " + attempts + " attempts left.");
-							if(attempts == 1)
-							{
-								System.out.println(puzzle.getPuzzleHint());
-							}
-						}
-						else
-						{
-							System.out.println("You failed to solve puzzle! You have been punished!");
+							System.out.println("You are right! You have been rewarded.");
+							attempts = 0;
 							puzzle.setSolved(true);
-							/*
-							if(puzzle.getPuzzleDamage() != 0)
+							db.getPuzzleList().put(puzzle.getItemID(), puzzle);
+							db.getRoomList().put(currentRoom.getRoomID(), currentRoom);
+							if(puzzle.getPuzzleReward() != 0)
 							{
-								player.setHp(player.getHp() - puzzle.getPuzzleReward());
-								System.out.println("You took " + puzzle.getPuzzleReward() + " damage! You now have " + player.getHp());
+								player.setHp(player.getHp() + puzzle.getPuzzleReward());
+								System.out.println("You have been healed for " + puzzle.getPuzzleReward() + " HP. You now have " + player.getHp());
 							}
 							else
 							{
-								
+								System.out.println("A " + puzzle.getItem().getItemName() + " has been added to your inventory!");
+								player.addItem(puzzle.getItem());
 							}
-							*/
-							puzzle.getPuzzleDamage(player);
 						}
-						db.getPuzzleList().put(puzzle.getItemID(), puzzle);
-						db.getRoomList().put(currentRoom.getRoomID(), currentRoom);
-					}
-				}while(!puzzle.isSolved() || attempts != 0);
+						else if(puzzleCommand.equalsIgnoreCase("ignore"))
+						{
+							System.out.println("You ignored the puzzle");
+							puzzle.setSolved(true);
+							attempts = 0;
+							db.getPuzzleList().put(puzzle.getItemID(), puzzle);
+							db.getRoomList().put(currentRoom.getRoomID(), currentRoom);
+						}
+						else
+						{
+							
+							attempts -= 1;
+							if(attempts > 0)
+							{
+								System.out.println("The answer you provided is wrong. Try again or 'Ignore'. You still have " + attempts + " attempts left.");
+								if(attempts == 1)
+								{
+									System.out.println(puzzle.getPuzzleHint());
+								}
+							}
+							else
+							{
+								System.out.println("You failed to solve puzzle! You have been punished!");
+								puzzle.setSolved(true);
+								puzzle.getPuzzleDamage(player);
+							}
+							db.getPuzzleList().put(puzzle.getItemID(), puzzle);
+							db.getRoomList().put(currentRoom.getRoomID(), currentRoom);
+						}
+					}while(!puzzle.isSolved() || attempts != 0);
+				}
 			}
 			
 			//The console will printout different questions based on if the user is in combat with a monster or not
@@ -284,9 +277,9 @@ public class Main {
 				{
 					if(currentRoom.getInventory().containsKey(secondWord))
 					{
-						Item item = db.itemList.get(secondWord);
+						Item item = db.getItemList().get(secondWord);
 						item.pickupItem(player, currentRoom);
-						db.itemList.put(item.getItemID(), item);
+						//db.itemList.put(item.getItemID(), item);
 					}
 					else
 					{
@@ -299,11 +292,13 @@ public class Main {
 				//Dropping an item. Removes an item from the Player's inventory and adds it to the Room's inventory.
 				if(firstWord.equalsIgnoreCase("Drop"))
 				{
-					if(player.getInventory().contains(secondWord))
+					Item itemObject = db.getItemList().get(secondWord);
+					//if(player.getInventory().contains(secondWord))
+					if(player.getInventory().contains(itemObject))
 					{
-						Item item = db.itemList.get(secondWord);
+						Item item = db.getItemList().get(secondWord);
 						item.dropItem(player, currentRoom);
-						db.itemList.put(item.getItemID(), item);
+						//db.itemList.put(item.getItemID(), item);
 					}
 					else
 					{
@@ -314,9 +309,11 @@ public class Main {
 				
 				if(firstWord.equalsIgnoreCase("Equip"))
 				{
-					if(player.getInventory().contains(secondWord))
+					Item itemObject = db.getItemList().get(secondWord);
+					//if(player.getInventory().contains(secondWord))
+					if(player.getInventory().contains(itemObject))
 					{
-						Item item = db.itemList.get(secondWord);
+						Item item = db.getItemList().get(secondWord);
 						item.equipItem(player);
 					}
 					else
@@ -328,9 +325,11 @@ public class Main {
 				
 				if(firstWord.equalsIgnoreCase("Unequip"))
 				{
-					if(player.getInventory().contains(secondWord))
+					Item itemObject = db.getItemList().get(secondWord);
+					//if(player.getInventory().contains(secondWord))
+					if(player.getInventory().contains(itemObject))
 					{
-						Item item = db.itemList.get(secondWord);
+						Item item = db.getItemList().get(secondWord);
 						item.unequipItem(player);
 					}
 					else
@@ -342,9 +341,11 @@ public class Main {
 				
 				if(firstWord.equalsIgnoreCase("Use"))
 				{
-					if(player.getInventory().contains(secondWord))
+					Item itemObject = db.getItemList().get(secondWord);
+					//if(player.getInventory().contains(secondWord))
+					if(player.getInventory().contains(itemObject))
 					{
-						Item item = db.itemList.get(secondWord);
+						Item item = db.getItemList().get(secondWord);
 						itemUsed = item.useItem(player);
 					}
 					else

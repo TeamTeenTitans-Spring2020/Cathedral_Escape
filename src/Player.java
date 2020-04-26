@@ -10,7 +10,7 @@ public class Player {
 	//HashMap<String, Item> inventory;
 	ArrayList<Item> inventory;//Read the String names. If the Weapon/Sword has a "," then setAtk to the int
 	Room currentRoom;//Read this as an integer. It'll get the Room based on the Room Number
-	int hp;//Maximum hp is 100.
+	int hp;//Maximum hp Items can heal to is 100. However, Puzzles can give hp above 100.
 	int atkDmg;
 	int def;
 	Item equippedWeapon;//Read this as a String name. If the Weapon/Sword has a "," then setAtk to the int
@@ -122,7 +122,7 @@ public class Player {
 			//for(Map.Entry<String, Item> entry : inventory.entrySet())
 			for(Item item : inventory)
 			{
-				System.out.println("You have a " + item);
+				System.out.println("You have a " + item.getItemName());
 			}
 		}
 		else
@@ -177,8 +177,8 @@ public class Player {
 	//Should I put in Main for entering a Room/using Navigation commands???
 	public void enterRoom(Room room, Database db, Scanner input)
 	{
-		this.setCurrentRoom(room);
-		boolean encounter = true;
+		//this.setCurrentRoom(room);
+		//boolean encounter = true;
 		//while(encounter)
 		//{
 		for(Entry<String, Monster> entry  : room.getMonsterList().entrySet())
@@ -203,7 +203,7 @@ public class Player {
 				//TO DO
 				//FIND OUT WHAT TO DO HERE
 				this.combat(monster, db, input);
-				encounter = false;
+				//encounter = false;
 				break;
 			}
 		}
@@ -278,7 +278,9 @@ public class Player {
 				
 				if(firstWord.equalsIgnoreCase("Equip"))
 				{
-					if(this.getInventory().contains(secondWord))
+					Item itemObject = db.getItemList().get(secondWord);
+					//if(this.getInventory().contains(secondWord))
+					if(this.getInventory().contains(itemObject))
 					{
 						int index = this.getInventory().indexOf(secondWord);
 						Item item = this.getInventory().get(index);
@@ -293,7 +295,9 @@ public class Player {
 				}
 				else if(firstWord.equalsIgnoreCase("Unequip"))
 				{
-					if(this.getInventory().contains(secondWord))
+					Item itemObject = db.getItemList().get(secondWord);
+					//if(this.getInventory().contains(secondWord))
+					if(this.getInventory().contains(itemObject))
 					{
 						int index = this.getInventory().indexOf(secondWord);
 						Item item = this.getInventory().get(index);
@@ -313,9 +317,11 @@ public class Player {
 					//Item item = this.getInventory.get(secondWord);
 					//Pick up from Room's inventory
 					//if(this.getInventory().contains(secondWord))
+					Item itemObject = db.getItemList().get(secondWord);
+					//if(this.getInventory().contains(secondWord))
 					if(this.getCurrentRoom().getInventory().containsKey(secondWord))
 					{
-						Item item = db.itemList.get(secondWord);
+						Item item = db.getItemList().get(secondWord);
 						item.pickupItem(this, this.getCurrentRoom());
 						successfulAction = true;
 					}
@@ -327,7 +333,9 @@ public class Player {
 				}
 				else if(firstWord.equalsIgnoreCase("Use"))
 				{
-					if(this.getInventory().contains(secondWord))
+					Item itemObject = db.getItemList().get(secondWord);
+					//if(this.getInventory().contains(secondWord))
+					if(this.getInventory().contains(itemObject))
 					{
 						int index = this.getInventory().indexOf(secondWord);
 						Item item = this.getInventory().get(index);

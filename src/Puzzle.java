@@ -101,6 +101,11 @@ public class Puzzle {
 				System.out.println("You had no items to lose. The punishment has been avoided.");
 			}
 		}
+		else
+		{
+			player.setHp(player.getHp() - this.getPuzzleDamage());
+			System.out.println("You have taken " + this.getPuzzleDamage() + " damage! You now have " + player.getHp() + " HP.");
+		}
 		//return puzzleDamage;
 	}
 
