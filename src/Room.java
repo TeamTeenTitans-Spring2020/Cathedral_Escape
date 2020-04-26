@@ -1,47 +1,81 @@
-
+import java.util.HashMap;
 
 public class Room {
 	// Creates attributes of the objects
-	private int roomID;
+	private String roomID;
 	private String roomName;
 	private String roomDescription;
 	private int roomToTheNorth;
 	private int roomToTheSouth;
 	private int roomToTheEast;
 	private int roomToTheWest;
-	private boolean hasBeenVisited;
-	private int itemID;
-	private int puzzleID;
+	private String[] itemID;
+	private String puzzleID;
+	private boolean isCurrentRoom;
+	private String floor;
+	private HashMap<String, Item> inventory = new HashMap<String, Item>();
+	private HashMap<String, Monster> monsterList = new HashMap<String, Monster>();
+	private Puzzle puzzle;
+	//Group all the rooms together by TopFloor, Bottom Floor, and stuff
 
 	// Empty Constructor
 	Room() {
 	}
 
-	// Room Constructor with all the attributes
-	Room(int newroomID, String roomName, String newroomDescription, int newroomToTheNorth, int newroomToTheSouth, int newroomToTheEast,
-			int newroomToTheWest,int itemID,int puzzleID,boolean newhasBeenVisited) {
-		roomID = newroomID;
+	// Room Constructor without isCurrentRoom
+	// Used when starting a new game
+	Room(String newroomID, String roomName, String newroomDescription, int newroomToTheNorth, int newroomToTheSouth, int newroomToTheEast,
+			int newroomToTheWest,String[] itemID,String puzzleID, String floor) {
+		this.roomID = newroomID;
 		this.roomName = roomName;
-		roomDescription = newroomDescription;
-		roomToTheNorth = newroomToTheNorth;
-		roomToTheSouth = newroomToTheSouth;
-		roomToTheEast = newroomToTheEast;
-		roomToTheWest = newroomToTheWest;
+		this.roomDescription = newroomDescription;
+		this.roomToTheNorth = newroomToTheNorth;
+		this.roomToTheSouth = newroomToTheSouth;
+		this.roomToTheEast = newroomToTheEast;
+		this.roomToTheWest = newroomToTheWest;
 		this.puzzleID = puzzleID;
 		this.itemID = itemID;
-		hasBeenVisited = newhasBeenVisited;
-	
-		
-
+		if(newroomID.equalsIgnoreCase("1"))
+		{
+			this.isCurrentRoom = false;
+		}
+		else
+		{
+			this.isCurrentRoom = true;
+		}
+		this.floor = floor;
+		this.inventory = new HashMap<String, Item>();
+		this.monsterList = new HashMap<String, Monster>();
+		this.puzzle = null;
 	}
-
+	
+	// Room Constructor with isCurrentRoom
+	// Used when loading a saved file
+	Room(String newroomID, String roomName, String newroomDescription, int newroomToTheNorth, int newroomToTheSouth, int newroomToTheEast,
+			int newroomToTheWest,String[] itemID,String puzzleID,String floor, boolean isThisCurrentRoom) {
+		this.roomID = newroomID;
+		this.roomName = roomName;
+		this.roomDescription = newroomDescription;
+		this.roomToTheNorth = newroomToTheNorth;
+		this.roomToTheSouth = newroomToTheSouth;
+		this.roomToTheEast = newroomToTheEast;
+		this.roomToTheWest = newroomToTheWest;
+		this.puzzleID = puzzleID;
+		this.itemID = itemID;
+		this.isCurrentRoom = isThisCurrentRoom;
+		this.floor = floor;
+		this.inventory = new HashMap<String, Item>();
+		this.monsterList = new HashMap<String, Monster>();
+		this.puzzle = null;
+	}
+	
 	/* Setter Methods */
 
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
 
-	public void setroomID(int newroomID) {
+	public void setRoomID(String newroomID) {
 		roomID = newroomID;
 	}
 
@@ -64,34 +98,26 @@ public class Room {
 	public void setroomToTheWest(int newroomToTheWest) {
 		roomToTheWest = newroomToTheWest;
 	}
-
-	public void sethasBeenVisited(boolean newhasBeenVisited) {
-		hasBeenVisited = newhasBeenVisited;
-	}
 	
-	
-
-	public void setpuzzleID(int puzzleID) {
+	public void setpuzzleID(String puzzleID) {
 		this.puzzleID = puzzleID;
 	}
 
 
-	public void setitemID(int itemID) {
+	public void setitemID(String[] itemID) {
 		this.itemID = itemID;
 	}
-	
-
 
 	/* Getter Methods */
 
-	public int getroomID() {
+	public String getRoomID() {
 		return roomID;
 	}
 
 	public String getRoomName() {
 		return roomName;
 	}
-	public String getroomDescription() {
+	public String getRoomDescription() {
 		return roomDescription;
 	}
 
@@ -110,21 +136,64 @@ public class Room {
 	public int getroomToTheWest() {
 		return roomToTheWest;
 	}
-
-	public boolean gethasBeenVisited() {
-		return hasBeenVisited;
-	}
 	
-
-	public int getpuzzleID() {
+	public String getpuzzleID() {
 		return this.puzzleID;
 	}
-	
 
-
-	public int getitemID() {
+	public String[] getitemID() {
 		return this.itemID;
 	}
 
+	public String getFloor() {
+		return floor;
+	}
 
+	public void setFloor(String floor) {
+		this.floor = floor;
+	}
+
+	public HashMap<String, Item> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(HashMap<String, Item> inventory) {
+		this.inventory = inventory;
+	}
+	
+	public HashMap<String, Monster> getMonsterList() {
+		return monsterList;
+	}
+
+	public void setMonsterList(HashMap<String, Monster> monsterList) {
+		this.monsterList = monsterList;
+	}
+	
+	public Puzzle getPuzzle() {
+		return puzzle;
+	}
+
+	public void setPuzzle(Puzzle puzzle) {
+		this.puzzle = puzzle;
+	}
+
+	public void addItem(Item item)
+	{
+		this.inventory.put(item.getItemID(), item);
+	}
+	
+	public void removeItem(Item item)
+	{
+		this.inventory.remove(item.getItemID());
+	}
+	
+	public void addMonster(Monster monster)
+	{
+		this.monsterList.put(monster.getMonsterName(), monster);
+	}
+	
+	public void removemonster(Monster monster)
+	{
+		this.monsterList.remove(monster.getMonsterName());
+	}
 }
