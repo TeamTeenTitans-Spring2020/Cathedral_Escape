@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class Room {
 	private boolean isCurrentRoom;
 	private String floor;
 	private HashMap<String, Item> inventory = new HashMap<String, Item>();
+	//private ArrayList<Item> inventory = new ArrayList<Item>();
 	private HashMap<String, Monster> monsterList = new HashMap<String, Monster>();
 	private Puzzle puzzle;
 	private boolean wasVisitedPreviously;
@@ -49,6 +51,7 @@ public class Room {
 		}
 		this.floor = floor;
 		this.inventory = new HashMap<String, Item>();
+		//this.inventory = new ArrayList<Item>();
 		this.monsterList = new HashMap<String, Monster>();
 		this.puzzle = null;
 	}
@@ -69,6 +72,7 @@ public class Room {
 		this.isCurrentRoom = isThisCurrentRoom;
 		this.floor = floor;
 		this.inventory = new HashMap<String, Item>();
+		//this.inventory = new ArrayList<Item>();
 		this.monsterList = new HashMap<String, Monster>();
 		this.puzzle = null;
 	}
@@ -191,12 +195,18 @@ public class Room {
 
 	public void addItem(Item item)
 	{
-		this.inventory.put(item.getItemID(), item);
+		this.inventory.put(item.getItemName(), item);
+		//this.inventory.add(item);
 	}
+	/*
+	public void addItem(String name)
+	{
+		Item item = 
+	}*/
 	
 	public void removeItem(Item item)
 	{
-		this.inventory.remove(item.getItemID());
+		this.inventory.remove(item.getItemName());
 	}
 	
 	public void addMonster(Monster monster)
@@ -268,7 +278,11 @@ public class Room {
 	
 	public void printMonsters()
 	{
-		if(this.monsterList.size() == 1)
+		if(this.monsterList.size() == 0)
+		{
+			System.out.println("There are no monsters in this room.");
+		}
+		else if(this.monsterList.size() == 1)
 		{
 			for(Entry<String, Monster> entry : this.monsterList.entrySet())
 			{
