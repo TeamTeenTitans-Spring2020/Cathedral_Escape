@@ -91,6 +91,7 @@ public class Monster {
 		if(this.hp > 0)
 		{
 			int hitNum = (int)(Math.random() * 100);
+			System.out.println("Hit Num: " + hitNum);
 			if(hitNum > 9)
 			{
 				int dmg = this.atk;
@@ -115,7 +116,7 @@ public class Monster {
 		{
 			int lootNum = (int)(Math.random() * 100);
 			System.out.println("Item Drop Number (0 - 99): " + lootNum);
-			if(lootNum < this.getItemDropChance())
+			if(lootNum <= this.getItemDropChance())
 			{
 				System.out.println("You got a " + this.getItemDropped());
 				player.addItem(this.getItemDropped());

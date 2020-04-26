@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.swing.BorderFactory;
@@ -49,15 +50,26 @@ public class Main {
 				restarted = false;
 			}
 			//player.setCurrentRoom(roomMap.get(roomInt));
-			player.setCurrentRoom(db.getRoomList().get(roomInt));
+			//player.setCurrentRoom(db.getRoomList().get(roomInt));
+			/*
+			System.out.println(roomInt);
+			for(Map.Entry<String, Room> entry : db.getRoomList().entrySet())
+			{
+				System.out.println(entry.getValue().getRoomName());
+			}
+			*/
+			player.setCurrentRoom(db.getRoomList().get(String.valueOf(roomInt)));
+			
 			Room currentRoom = player.getCurrentRoom();
 			Monster monster;
 			boolean itemUsed = false;
 			
+			//BOOKMARK TO DO
+			//Get rid of this??? Already have it in EnterRoom???
 			if(roomInt != prevRoomInt)
 			{
-				System.out.println(currentRoom.getRoomDescription());
-				//if(currentRoom.getWasVisitedPreviously())
+				//System.out.println(currentRoom.getRoomDescription());
+				if(currentRoom.isWasVisitedPreviously())
 				{
 					System.out.println("This room seems familiar.");
 				}
@@ -67,7 +79,8 @@ public class Main {
 			
 			//The input for Solving Puzzles
 			//Puzzles will automatically ask for the user to solve them once they enter a Room with a puzzle that has more than 0 attempts.
-			if(!currentRoom.getPuzzle().isSolved())
+			//if(!currentRoom.getPuzzle().isSolved())
+			if(!(currentRoom.getPuzzle() == null))
 			{
 				Puzzle puzzle = currentRoom.getPuzzle();
 				//System.out.println(puzzle.getDescription());
@@ -145,18 +158,25 @@ public class Main {
 			}
 			
 			//The console will printout different questions based on if the user is in combat with a monster or not
+			/*
 			if(player.isInCombat())
 			{
 				//Change combat to be handled in a method???
+				
 				monster = monsterMap.get(currentRoom.getRoomNum());
 				System.out.println("You are in combat with a " + monster.getName() + ". What would you like to do?");
 				System.out.print("> ");
 			}
+			*/
+			/*
 			else
 			{
 				System.out.println("Which direction do you want to go? (N, E, W, S)");
 				System.out.print("> ");
 			}
+			*/
+			System.out.println("Which direction do you want to go? (N, E, W, S)");
+			System.out.print("> ");
 			
 			String command = m.input.nextLine(); //The user input
 			if(command.contains(" "))
@@ -171,7 +191,10 @@ public class Main {
 					//Examining the Room's inventory. Can also be done simply by typing "Examine"
 					if(secondWord.equalsIgnoreCase("Room"))
 					{
+						
 						player.getCurrentRoom().examineInventory();
+						currentRoom.printMonsters();
+						/*
 						if(player.getCurrentRoom().isHasMonster())
 						{
 							System.out.println("There's a monster in the room.");
@@ -180,13 +203,16 @@ public class Main {
 						{
 							System.out.println("There are not monsters in the room.");
 						}
+						*/
 					}
 					//Examining the Player's inventory
 					else if(secondWord.equalsIgnoreCase("Inventory"))
 					{
 						player.examineInventory();
 					}
+					//BOOKMARK
 					//Examining a Monster, if one is in the Room
+					/*
 					else if(secondWord.equalsIgnoreCase("Monster"))
 					{
 						if(currentRoom.isHasMonster())
@@ -233,15 +259,17 @@ public class Main {
 							System.out.println("There's no monsters in this room.");
 						}
 					}
+					*/
 					//Examining an Item in a Room's inventory
 					else if(currentRoom.getInventory().containsKey(secondWord))
 					{
 						currentRoom.getInventory().get(secondWord).examineItem();
 					}
 					//Examining an Item in the Player's inventory
-					else if(player.getInventory().containsKey(secondWord))
+					else if(player.getInventory().contains(secondWord))
 					{
-						player.getInventory().get(secondWord).examineItem();
+						int index = player.getInventory().indexOf(secondWord);
+						player.getInventory().get(index).examineItem();
 					}
 					//Failure message to let the user know what they may be typing wrong when using the 'Examine' command
 					else
@@ -256,9 +284,9 @@ public class Main {
 				{
 					if(currentRoom.getInventory().containsKey(secondWord))
 					{
-						Item item = itemMap.get(secondWord);
+						Item item = db.itemList.get(secondWord);
 						item.pickupItem(player, currentRoom);
-						itemMap.put(item.getName(), item);
+						db.itemList.put(item.getItemID(), item);
 					}
 					else
 					{
@@ -271,15 +299,11 @@ public class Main {
 				//Dropping an item. Removes an item from the Player's inventory and adds it to the Room's inventory.
 				if(firstWord.equalsIgnoreCase("Drop"))
 				{
-					if(player.inCombat)
+					if(player.getInventory().contains(secondWord))
 					{
-						System.out.println("You cannot drop an item. You are currently in combat with a monster.");
-					}
-					else if(player.getInventory().containsKey(secondWord))
-					{
-						Item item = itemMap.get(secondWord);
+						Item item = db.itemList.get(secondWord);
 						item.dropItem(player, currentRoom);
-						itemMap.put(item.getName(), item);
+						db.itemList.put(item.getItemID(), item);
 					}
 					else
 					{
@@ -290,9 +314,9 @@ public class Main {
 				
 				if(firstWord.equalsIgnoreCase("Equip"))
 				{
-					if(player.getInventory().containsKey(secondWord))
+					if(player.getInventory().contains(secondWord))
 					{
-						Item item = itemMap.get(secondWord);
+						Item item = db.itemList.get(secondWord);
 						item.equipItem(player);
 					}
 					else
@@ -304,9 +328,9 @@ public class Main {
 				
 				if(firstWord.equalsIgnoreCase("Unequip"))
 				{
-					if(player.getInventory().containsKey(secondWord))
+					if(player.getInventory().contains(secondWord))
 					{
-						Item item = itemMap.get(secondWord);
+						Item item = db.itemList.get(secondWord);
 						item.unequipItem(player);
 					}
 					else
@@ -318,9 +342,9 @@ public class Main {
 				
 				if(firstWord.equalsIgnoreCase("Use"))
 				{
-					if(player.getInventory().containsKey(secondWord))
+					if(player.getInventory().contains(secondWord))
 					{
-						Item item = itemMap.get(secondWord);
+						Item item = db.itemList.get(secondWord);
 						itemUsed = item.useItem(player);
 					}
 					else
@@ -335,17 +359,11 @@ public class Main {
 			else if(command.equalsIgnoreCase("Examine"))
 			{
 				player.getCurrentRoom().examineInventory();
-				if(player.getCurrentRoom().isHasMonster())
-				{
-					System.out.println("There's a monster in the room.");
-				}
-				else
-				{
-					System.out.println("There are not monsters in the room.");
-				}
+				currentRoom.printMonsters();
 			}
 			
 			//Command for attacking a monster
+			/*
 			else if (command.equalsIgnoreCase("Attack"))
 			{
 				if(!player.inCombat)
@@ -369,29 +387,69 @@ public class Main {
 					}
 				}
 			}
+			*/
 			
 			//Command for printing the exits in the current room
+			/*
 			else if(command.equalsIgnoreCase("Print"))
 			{
 				printExits(player);
 			}
+			*/
 			
 			//Command for looking at the player's hp and attack
 			else if (command.equalsIgnoreCase("Stat"))
 			{
-				printPlayerStats();
+				//m.printPlayerStats(player);
+				player.printPlayerStats();
+			}
+			
+			else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
+			{
+				String num = command.substring(command.length() - 1);
+				db.readFiles(num);
+			}
+			
+			else if(command.equalsIgnoreCase("Exit"))
+			{
+				System.out.println("You have exited the game.");
+				System.exit(0);
 			}
 			
 			//Navigation commands
 			else if((command.equalsIgnoreCase("N") ||command.equalsIgnoreCase("E") || command.equalsIgnoreCase("W") || command.equalsIgnoreCase("S") ||
 				command.equalsIgnoreCase("North") || command.equalsIgnoreCase("South") || command.equalsIgnoreCase("East") || command.equalsIgnoreCase("West")))
 			{
+				//LinkedList<String> exits = currentRoom.getExits();
+				//BOOKMARK
+				//Get away from HashMap. Use something else.
+				HashMap<String, String> exits = currentRoom.getExits();
+				String commandLetter = command.substring(0, 1);
+				String roomNum = exits.get(commandLetter);
+				
+				//int index = exits.indexOf(commandLetter);
+				
+				if(!roomNum.equalsIgnoreCase("0"))
+				{
+					Room room = db.getRoomList().get(roomNum);
+					currentRoom = room;
+					roomInt = Integer.parseInt(currentRoom.getRoomID());
+					
+				}
+				else
+				{
+					System.out.println("You can't go that way. There's a wall.");
+				}
+				//int index = exits.contains(commandLetter);
+				/*
 				if(player.inCombat)
 				{
 					System.out.println("You cannot go to another room. You are currently in combat with a monster.");
 				}
-				else
-				{
+				*/
+				//else
+				//{
+					/*
 					boolean isWalkable = false; //Enables the game to show the user a message if they can't go a certain direction
 					String commandLetter = command.substring(0, 1); //The first letter of the user input used to determine if the word is North, East, South, or West
 					LinkedList<String> exitList = currentRoom.getExits(); //The list of exits the current Room has
@@ -401,11 +459,6 @@ public class Main {
 						if(commandLetter.equalsIgnoreCase(exitLetter))
 						{
 							isWalkable = true;
-							if(!currentRoom.getWasVisitedPreviously())
-							{
-								currentRoom.setWasVisitedPreviously(true);
-								roomMap.put(roomInt, currentRoom);
-							}
 							
 							
 							roomInt = Integer.parseInt(exit.substring(exit.length() - 1));
@@ -416,8 +469,10 @@ public class Main {
 					{
 						System.out.println("You can't go that way.");
 					}
-				}
+					*/
+				//}
 			}
+			/*
 			prevRoomInt = currentRoom.getRoomNum();
 			if(player.isInCombat() && (command.equalsIgnoreCase("Attack") || itemUsed))
 			{
@@ -425,71 +480,56 @@ public class Main {
 				System.out.println("Player HP: " + player.getHp() + "               Monster HP: " + monster.getHp());
 				itemUsed = false;
 			}
-			if(player.getHp() <= 0)
+			*/
+			while(player.getHp() <= 0)
 			{
-				boolean gameover = true;
-				System.out.println("GAME OVER. You have died. Would you like to 'Exit' the game or 'Restart' from a new game?");
-				while(gameover)
+				System.out.println("You choke on your last breath as you see the last of your blood spill from your body. Game over.");
+				System.out.println("Would you like to 'Start' a new game, 'Load' a pre-existing save, or 'Exit' the game?");
+				command = m.input.nextLine();
+				String num = command.substring(command.length() - 1);
+				if(command.equalsIgnoreCase("Start"))
 				{
-					System.out.println("Would you like to 'Exit' the game or 'Restart' from a new game?");
-					System.out.print("> ");
-					String gInput = m.input.nextLine();
-					if(gm.input.equalsIgnoreCase("Restart"))
-					{
-						player.setInCombat(false);
-						tr = runProgram();
-						restarted = true;
-						gameover = false;
-					}
-					else if(gm.input.equalsIgnoreCase("Exit"))
-					{
-						System.out.println("You have exited the game.");
-						System.exit(0);
-					}
-					else
-					{
-						System.out.println("Invalid m.input. You are currently dead.");
-					}
+					db.readFiles("");
+				}
+				else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
+				{
+					db.readFiles(num);
+				}
+				else if(command.equalsIgnoreCase("Exit"))
+				{
+					System.out.println("You have exited the game.");
+					System.exit(0);
+				}
+				else
+				{
+					System.out.println("Invalid command. Please type 'Start', 'Load', or 'Exit'. If you wish to 'Load', type either 'Load1', 'Load2', or 'Load3' to load their respective saves.");
 				}
 			}
-		
-		}while(loop);
-		
+		//}
+
+	}while(loop);
+
+}
+	
+	public void printPlayerStats(Player player)
+	{
+		System.out.println("Player HP : " + player.getHp() + "        Player ATK: " + player.getAtkDmg() + "        Player DEF: " + player.getDef());
+		String weapon = "None";
+		String armor = "None";
+		String wAtk = "0";
+		String aDef = "0";
+		if(player.getEquippedWeapon() != null)
+		{
+			weapon = player.getEquippedWeapon().getItemName();
+			wAtk = String.valueOf(player.getEquippedWeapon().getUseValue());
+		}
+		if(player.getEquippedArmor() != null)
+		{
+			armor = player.getEquippedArmor().getItemName();
+			aDef = String.valueOf(player.getEquippedArmor().getUseValue());
+		}
+		System.out.println("Equipped Weapon: " + weapon + "        Equipped Armor: " + armor);
+		System.out.println("Weapon ATK: " + wAtk + "        Armor DEF: " + aDef);
 	}
 	
-	//TO DO
-	//Return m???
-	/*
-	public void startGame(Database db)
-	{
-		
-		boolean alive = true;
-		while(alive)
-		{
-			
-		}
-		System.out.println("You choke on your last breath as you see the last of your blood spill from your body. Game over.");
-		System.out.println("Would you like to 'Start' a new game, 'Load' a pre-existing save, or 'Exit' the game?");
-		String command = m.input.nextLine();
-		if(command.equalsIgnoreCase("Start"))
-		{
-			db.readFiles("");
-			startGame(db);
-		}
-		else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
-		{
-			db.readFiles(command);
-			startGame(db);
-		}
-		else if(command.equalsIgnoreCase("Exit"))
-		{
-			System.out.println("You have exited the game.");
-			System.exit(0);
-		}
-		else
-		{
-			System.out.println("Invalid command. Please type 'Start', 'Load', or 'Exit'. If you wish to 'Load', type either 'Load1', 'Load2', or 'Load3' to load their respective saves.");
-		}
-	}
-	*/
 }

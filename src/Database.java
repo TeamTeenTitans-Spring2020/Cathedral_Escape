@@ -13,6 +13,18 @@ public class Database {
 	public Player player;//If an Item's Room is 0, add it to player.addInventory()
 	public Scanner scan;
 	
+	
+	//BOOKMARK
+	//When loading a save, then create a new Database???
+	//public Database(Room room)
+	public Database() {
+		this.itemList = itemList;
+		this.monsterList = monsterList;
+		this.puzzleList = puzzleList;
+		this.roomList = roomList;
+		this.player = new Player(roomList.get("1"));
+	}
+
 	public void addItem(Item item)
 	{
 		itemList.put(item.getItemName(), item);
@@ -223,10 +235,10 @@ public class Database {
 					String id = text[0];
 					String name = text[1];
 					String desc = text[2];
-					int north = Integer.parseInt(text[3]);
-					int south = Integer.parseInt(text[4]);
-					int east = Integer.parseInt(text[5]);
-					int west = Integer.parseInt(text[6]);
+					String north = text[3];
+					String south = text[4];
+					String east = text[5];
+					String west = text[6];
 					String itemIDList = text[7];
 					String puzzleID = text[8];
 					String floor = text[9];
@@ -273,6 +285,8 @@ public class Database {
 			}
 
 			//readPlayer
+			//ArrayList[0], String Room currentRoom[1], int hp[2], int atkDmg[3], int def[4], ;;;String[] Item equippedWeapon[5];;;, String<Item> equippedArmor[6],
+			//boolean inCombat[7], ;;;String[] Monster monster[8];;;
 
 
 			System.out.println("Files read");

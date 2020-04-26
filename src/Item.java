@@ -56,6 +56,14 @@ public class Item {
 		this.isEquipped = isEquipped;
 	}
 	
+	public int getUseValue() {
+		return useValue;
+	}
+
+	public void setUseValue(int useValue) {
+		this.useValue = useValue;
+	}
+
 	/* examineItem()
 	 * Prints out the description of an Item
 	 */
@@ -163,7 +171,7 @@ public class Item {
 			System.out.println(this.itemName + " cannot be used.");
 			return false;
 		}
-		else
+		else if(this.itemType.equalsIgnoreCase("Consumable"))
 		{
 			int playerhp = player.getHp();
 			if(playerhp == 100)
@@ -173,19 +181,35 @@ public class Item {
 			}
 			else
 			{
-				playerhp += this.heal;
-				int healed = this.heal;
+				playerhp += this.useValue;
+				int healed = this.useValue;
 				if(playerhp > 100)
 				{
 					healed = healed - playerhp + 100;
 					playerhp = 100;
 				}
 				player.setHp(playerhp);
-				player.getInventory().remove(this.itemName);
+				//player.getInventory().remove(this.itemName);
+				player.removeItem(this);
 				System.out.println("You used " + this.itemName + " to heal " + healed + " HP. You now have " + player.getHp() + " HP. " + this.itemName + " has disappeared from your Inventory.");
 				return true;
 			}
 		}
+		else if(this.itemType.equalsIgnoreCase("Buff"))
+		{
+			if(player.getEquippedWeapon() == null)
+			{
+				System.out.println("Cannot use " + this.itemName + ". You have no weapon equipped to buff.");
+				return false;
+			}
+			else
+			{
+				Item item = player.getEquippedWeapon();
+				item.setUseValue(this.useValue + item.getUseValue());
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

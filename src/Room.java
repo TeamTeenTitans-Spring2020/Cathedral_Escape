@@ -1,14 +1,17 @@
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class Room {
 	// Creates attributes of the objects
 	private String roomID;
 	private String roomName;
 	private String roomDescription;
-	private int roomToTheNorth;
-	private int roomToTheSouth;
-	private int roomToTheEast;
-	private int roomToTheWest;
+	private String roomToTheNorth;
+	private String roomToTheSouth;
+	private String roomToTheEast;
+	private String roomToTheWest;
 	private String[] itemID;
 	private String puzzleID;
 	private boolean isCurrentRoom;
@@ -16,6 +19,7 @@ public class Room {
 	private HashMap<String, Item> inventory = new HashMap<String, Item>();
 	private HashMap<String, Monster> monsterList = new HashMap<String, Monster>();
 	private Puzzle puzzle;
+	private boolean wasVisitedPreviously;
 	//Group all the rooms together by TopFloor, Bottom Floor, and stuff
 
 	// Empty Constructor
@@ -24,8 +28,8 @@ public class Room {
 
 	// Room Constructor without isCurrentRoom
 	// Used when starting a new game
-	Room(String newroomID, String roomName, String newroomDescription, int newroomToTheNorth, int newroomToTheSouth, int newroomToTheEast,
-			int newroomToTheWest,String[] itemID,String puzzleID, String floor) {
+	Room(String newroomID, String roomName, String newroomDescription, String newroomToTheNorth, String newroomToTheSouth, String newroomToTheEast,
+			String newroomToTheWest,String[] itemID,String puzzleID, String floor) {
 		this.roomID = newroomID;
 		this.roomName = roomName;
 		this.roomDescription = newroomDescription;
@@ -51,8 +55,8 @@ public class Room {
 	
 	// Room Constructor with isCurrentRoom
 	// Used when loading a saved file
-	Room(String newroomID, String roomName, String newroomDescription, int newroomToTheNorth, int newroomToTheSouth, int newroomToTheEast,
-			int newroomToTheWest,String[] itemID,String puzzleID,String floor, boolean isThisCurrentRoom) {
+	Room(String newroomID, String roomName, String newroomDescription, String newroomToTheNorth, String newroomToTheSouth, String newroomToTheEast,
+			String newroomToTheWest,String[] itemID,String puzzleID,String floor, boolean isThisCurrentRoom) {
 		this.roomID = newroomID;
 		this.roomName = roomName;
 		this.roomDescription = newroomDescription;
@@ -83,19 +87,19 @@ public class Room {
 		roomDescription = newroomDescription;
 	}
 
-	public void setroomToTheNorth(int newroomToTheNorth) {
+	public void setroomToTheNorth(String newroomToTheNorth) {
 		roomToTheNorth = newroomToTheNorth;
 	}
 
-	public void setroomToTheSouth(int newroomToTheSouth) {
+	public void setroomToTheSouth(String newroomToTheSouth) {
 		roomToTheSouth = newroomToTheSouth;
 	}
 
-	public void setroomToTheEast(int newroomToTheEast) {
+	public void setroomToTheEast(String newroomToTheEast) {
 		roomToTheEast = newroomToTheEast;
 	}
 
-	public void setroomToTheWest(int newroomToTheWest) {
+	public void setroomToTheWest(String newroomToTheWest) {
 		roomToTheWest = newroomToTheWest;
 	}
 	
@@ -121,19 +125,19 @@ public class Room {
 		return roomDescription;
 	}
 
-	public int getroomToTheNorth() {
+	public String getroomToTheNorth() {
 		return roomToTheNorth;
 	}
 
-	public int getroomToTheSouth() {
+	public String getroomToTheSouth() {
 		return roomToTheSouth;
 	}
 
-	public int getroomToTheEast() {
+	public String getroomToTheEast() {
 		return roomToTheEast;
 	}
 
-	public int getroomToTheWest() {
+	public String getroomToTheWest() {
 		return roomToTheWest;
 	}
 	
@@ -176,6 +180,14 @@ public class Room {
 	public void setPuzzle(Puzzle puzzle) {
 		this.puzzle = puzzle;
 	}
+	
+	public boolean isWasVisitedPreviously() {
+		return wasVisitedPreviously;
+	}
+
+	public void setWasVisitedPreviously(boolean wasVisitedPreviously) {
+		this.wasVisitedPreviously = wasVisitedPreviously;
+	}
 
 	public void addItem(Item item)
 	{
@@ -195,5 +207,83 @@ public class Room {
 	public void removemonster(Monster monster)
 	{
 		this.monsterList.remove(monster.getMonsterName());
+	}
+	
+	//public LinkedList<String> getExits()
+	public HashMap<String, String> getExits()
+	{
+		//Getting exits so Navi Commands work
+		HashMap<String, String> exits = new HashMap<String, String>();
+		exits.put("N", this.getroomToTheNorth());
+		exits.put("S", this.getroomToTheSouth());
+		exits.put("E", this.getroomToTheEast());
+		exits.put("W", this.getroomToTheWest());
+		/*
+		LinkedList<String> rooms = new LinkedList<String>();
+		rooms.add(this.getroomToTheNorth());
+		rooms.add(this.getroomToTheSouth());
+		rooms.add(this.getroomToTheEast());
+		rooms.add(this.getroomToTheWest());
+		*/
+		return exits;
+	}
+	
+	/* examineRoom()
+	 * If the user inputs "Examine Room", 
+	 */
+	public void examineRoom()
+	{
+		System.out.println(this.getRoomDescription());
+	}
+	
+	/* examine()
+	 * If the user types "Examine", the game tells the user what items are in the room's inventory.
+	 */
+	public void examineInventory()
+	{
+		if(this.inventory.size() == 0)
+		{
+			System.out.println("There are no items in this room.");
+			return;
+		}
+		else if(this.inventory.size() == 1)
+		{
+			for(Entry<String, Item> entry : this.inventory.entrySet())
+			{
+				System.out.println("There is a " + entry.getValue().getItemName() + " here.");
+			}
+			return;
+		}
+		else
+		{
+			String items = "";
+			for(Map.Entry<String, Item> entry : inventory.entrySet())
+			{
+				items = items + entry.getKey() + ", ";
+			}
+			System.out.println("The following items are in " + this.getRoomName() + ": " + items.substring(0, items.length() - 2));
+		}
+		
+	}
+	
+	public void printMonsters()
+	{
+		if(this.monsterList.size() == 1)
+		{
+			for(Entry<String, Monster> entry : this.monsterList.entrySet())
+			{
+				System.out.println("There is a " + entry.getValue().getMonsterName() + " here.");
+			}
+			return;
+		}
+		else
+		{
+			String monsters = "";
+			for(Entry<String, Monster> entry : this.getMonsterList().entrySet())
+			{
+				monsters = monsters + entry.getKey() + ", ";
+			}
+			System.out.println("The following monsters are in " + this.getRoomName() + ": " + monsters.substring(0, monsters.length() - 2));
+		}
 	}
 }
