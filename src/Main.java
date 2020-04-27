@@ -57,10 +57,12 @@ public class Main {
 			}
 			//player.setCurrentRoom(roomMap.get(roomInt));
 			//player.setCurrentRoom(db.getRoomList().get(roomInt));
+			
 			player.setCurrentRoom(db.getRoomList().get(String.valueOf(roomInt)));
 			
 			currentRoom = player.getCurrentRoom();
 			monster = db.getMonsterList().get("Human Skeleton");
+			
 			//player.setCurrentRoom(currentRoom);
 			
 			//RE-ENABLE IF CODE GETS BUSTED
@@ -309,6 +311,20 @@ public class Main {
 								+ "to spell it exactly as it appears when typed in the 'Explore' description for the room or the 'Explore Inventory' description.");
 					}
 				}
+				
+				if(firstWord.equalsIgnoreCase("New"))
+				{
+					if(secondWord.equalsIgnoreCase("Game"))
+					{
+						System.out.println("    You are starting a new game");
+						db.readFiles("");
+						monster = db.getMonsterList().get(monster.getMonsterName());
+						player = db.getPlayer();
+						currentRoom = player.getCurrentRoom();
+						roomInt = Integer.parseInt(currentRoom.getRoomID());
+						prevRoomInt = 0;
+					}
+				}
 			}
 			
 			//Command for examining a Room's inventory of Items
@@ -346,7 +362,7 @@ public class Main {
 				System.out.println("You have exited the game.");
 				System.exit(0);
 			}
-			
+			/*
 			else if(command.equalsIgnoreCase("Start"))
 			{
 				//db = new Database();
@@ -354,13 +370,32 @@ public class Main {
 				System.out.println("    You are starting a new game");
 				db.readFiles("");
 				monster = db.getMonsterList().get(monster.getMonsterName());
+				player = db.getPlayer();
+				currentRoom = player.getCurrentRoom();
+				roomInt = Integer.parseInt(currentRoom.getRoomID());
+				prevRoomInt = 0;
 			}
+			*/
 			else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
 			{
 				String num = command.substring(command.length() - 1);
 				db = new Database();
 				//db = db.readFiles(num);
+				System.out.println("    You are loading save" + num);
+				db.readFiles(num);
 				monster = db.getMonsterList().get(monster.getMonsterName());
+				player = db.getPlayer();
+				currentRoom = player.getCurrentRoom();
+				roomInt = Integer.parseInt(currentRoom.getRoomID());
+				prevRoomInt = 0;
+			}
+			else if(command.equalsIgnoreCase("Save1") || command.equalsIgnoreCase("Save2") || command.equalsIgnoreCase("Save3"))
+			{
+				String num = command.substring(command.length() - 1);
+				db = new Database();
+				//db = db.readFiles(num);
+				System.out.println("    You are saveing to save" + num);
+				db.saveFiles(num);
 			}
 			
 			//Navigation commands
@@ -447,13 +482,22 @@ public class Main {
 					System.out.println("    You are starting a new game");
 					db.readFiles("");
 					monster = db.getMonsterList().get(monster.getMonsterName());
+					player = db.getPlayer();
+					System.out.println("    New game room: " + player.getCurrentRoom().getRoomName());
+					currentRoom = player.getCurrentRoom();
+					roomInt = Integer.parseInt(currentRoom.getRoomID());
+					prevRoomInt = 0;
 				}
 				else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
 				{
 					//db = new Database();
 					//db = db.readFiles(num);
+					System.out.println("    You are loading save file" + num);
 					db.readFiles(num);
 					monster = db.getMonsterList().get(monster.getMonsterName());
+					player = db.getPlayer();
+					currentRoom = player.getCurrentRoom();
+					prevRoomInt = 0;
 				}
 				else if(command.equalsIgnoreCase("Exit"))
 				{
@@ -488,13 +532,20 @@ public class Main {
 						System.out.println("    You are starting a new game");
 						db.readFiles("");
 						monster = db.getMonsterList().get(monster.getMonsterName());
+						player = db.getPlayer();
+						currentRoom = player.getCurrentRoom();
+						prevRoomInt = 0;
 					}
 					else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
 					{
 						//db = new Database();
 						//db = db.readFiles(num);
+						System.out.println("    You are loading save file" + num);
 						db.readFiles(num);
 						monster = db.getMonsterList().get(monster.getMonsterName());
+						player = db.getPlayer();
+						currentRoom = player.getCurrentRoom();
+						prevRoomInt = 0;
 					}
 					else if(command.equalsIgnoreCase("Exit"))
 					{
