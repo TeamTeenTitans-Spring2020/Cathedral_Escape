@@ -36,7 +36,7 @@ what is happening in the cathedral.
 | E                 | Takes player to east of the current room if available                                                      |
 | W                 | Takes player to west of the current room if available                                                      |
 | Save game         | The game session will be saved                                                                             |
-| Explore room      | Player will be able to if there are items, puzzles, or monsters in the current room                        |
+| EXPLORE           | Player will be able to see if there are items, puzzles, or monsters in the current room                    |
 | Quit              | Player will be taken to the starting screen                                                                |
 | Try again         | Player will be taken to the last saving point                                                              |
 | Grab(item-name)   | Item will be added to player's inventory                                                                   |
