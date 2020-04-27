@@ -255,14 +255,14 @@ public class Room {
 	{
 		if(this.inventory.size() == 0)
 		{
-			System.out.println("There are no items in this room.");
+			System.out.println("    There are no items in this room.");
 			return;
 		}
 		else if(this.inventory.size() == 1)
 		{
 			for(Entry<String, Item> entry : this.inventory.entrySet())
 			{
-				System.out.println("There is a " + entry.getValue().getItemName() + " here.");
+				System.out.println("    There is a " + entry.getValue().getItemName() + " here.");
 			}
 			return;
 		}
@@ -273,7 +273,7 @@ public class Room {
 			{
 				items = items + entry.getKey() + ", ";
 			}
-			System.out.println("The following items are in " + this.getRoomName() + ": " + items.substring(0, items.length() - 2));
+			System.out.println("    The following items are in " + this.getRoomName() + ": " + items.substring(0, items.length() - 2));
 		}
 		
 	}
