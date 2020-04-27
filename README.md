@@ -31,3 +31,7 @@ what is happening in the cathedral.
 | W                 | Player will be able to traverse floors if they are at the stairs                                           |
 | E                 | Player will be able to traverse floors if they are at the stairs                                           |
 
+
+## Map (Player Version)
+###Top Floor
+![Uploading topfloorplayer.PNG…]()
