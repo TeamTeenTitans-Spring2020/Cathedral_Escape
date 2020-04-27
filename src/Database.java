@@ -134,11 +134,11 @@ public class Database {
 	//public Database readFiles(String fileNum)
 	{
 		Database db = new Database();
-		itemList = new HashMap<String, Item>();
-		itemListNum = new HashMap<String, Item>();
-		monsterList = new HashMap<String, Monster>();
-		puzzleList = new HashMap<String, Puzzle>();//0 Puzzle doesn't exist
-		roomList = new HashMap<String, Room>();
+		this.itemList = new HashMap<String, Item>();
+		this.itemListNum = new HashMap<String, Item>();
+		this.monsterList = new HashMap<String, Monster>();
+		this.puzzleList = new HashMap<String, Puzzle>();//0 Puzzle doesn't exist
+		this.roomList = new HashMap<String, Room>();
 		//player = new Player(roomList.get("1"));
 		//readItems int itemID[0], name[1], desc[2], type[3], action[4], int value[5]
 		//Integer.parseInt(text[0])
@@ -559,7 +559,8 @@ public class Database {
 					}
 					
 					//this.player = new Player(inventory, room, hp, atk, def, weapon, armor, inCombat, monster);
-					player = new Player(inventory, room, hp, atk, def, weapon, armor, inCombat, monster);
+					this.player = new Player(inventory, room, hp, atk, def, weapon, armor, inCombat, monster);
+					//System.out.println(player.getCurrentRoom().getRoomName());
 				}
 			}
 			catch(FileNotFoundException fr)
@@ -581,7 +582,14 @@ public class Database {
 	{
 		if(fileNum.equals("1") || fileNum.equals("2") || fileNum.equals("3"))
 		{
+			String file = "items" + fileNum;
 			
+			
+			
+			
+			
+			
+			f
 		}
 		else
 		{
