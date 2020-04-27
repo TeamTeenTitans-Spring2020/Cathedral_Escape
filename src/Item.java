@@ -111,19 +111,19 @@ public class Item {
 			}
 			else if(this.itemType.equalsIgnoreCase("Weapon"))
 			{
+				player.setEquippedWeapon(this);
 				int initial = player.getAtkDmg();
 				int totalDmg = initial + this.useValue;
 				player.setAtkDmg(totalDmg);
 				System.out.println("    " + this.itemName + " has been equipped. Your Attack Damage increased to: " + totalDmg);
-				player.setEquippedWeapon(this);
 			}
 			else if(this.itemType.equalsIgnoreCase("Armor"))
 			{
+				player.setEquippedArmor(this);
 				int initial = player.getDef();
 				int totalDef = initial + this.useValue;
 				player.setDef(totalDef);
 				System.out.println("    " + this.itemName + " has been equipped. Your Defense has increased to: " + totalDef);
-				player.setEquippedArmor(this);
 			}
 		}
 	}

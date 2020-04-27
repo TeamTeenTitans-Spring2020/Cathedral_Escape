@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -248,15 +250,19 @@ public class Player {
 		return monsterHP;
 	}
 	
-	public boolean escape()
+	public boolean escape(Monster monster)
 	{
 		int escChance = (int)(Math.random() * 100);
 		//System.out.println("Escape Roll (0 - 99): " + escChance);
-		if(escChance > 49)
+		if(escChance > 49 && (!monster.getMonsterName().equalsIgnoreCase("Vampire Queen")))
 		{
 			System.out.println("    You escaped the monster!");
-			//inCombat = false;
 			return false;
+		}
+		else if(monster.getMonsterName().equalsIgnoreCase("Vampire Queen"))
+		{
+			System.out.println("    You cannot run from the Vampire Queen");
+			return true;
 		}
 		else
 		{
@@ -265,21 +271,16 @@ public class Player {
 		}
 	}
 	
-	//public void enterRoom(Room room, Database db, Scanner input)
 	public Monster enterRoom(Room room, Database db, Scanner input)
 	{
-		//System.out.println(currentRoom.getRoomName());
-		//System.out.println(currentRoom.getRoomDescription());
 		System.out.println(this.getCurrentRoom().getRoomName());
 		System.out.println(this.getCurrentRoom().getRoomDescription());
-		//this.setCurrentRoom(room);
 		Monster monster = db.getMonsterList().get("Human Skeleton");
 		for(Entry<String, Monster> entry  : room.getMonsterList().entrySet())
 		{
 			monster = entry.getValue();
 			int index = 0;
 			int encNum = (int)(Math.random() * 100);
-			//System.out.println("Encounter Num: " + encNum);
 			int monsterAprRate = monster.getAppearanceChance().get(index);
 			if(encNum <= monsterAprRate)
 			{
@@ -311,7 +312,6 @@ public class Player {
 		System.out.println("    Weapon ATK: " + wAtk + "        Armor DEF: " + aDef);
 	}
 	
-	//public void combat(Monster monster, Database db, Scanner input)
 	public Monster combat(Monster monster, Database db, Scanner input)
 	{
 		int monsterHP = monster.getHp();
@@ -322,10 +322,10 @@ public class Player {
 		{
 			boolean successfulAction = false;
 			System.out.println("Player HP: " + this.getHp() + "        Player Atk: " + this.getAtkDmg());
-			//System.out.println(monster.getMonsterName() + " HP: " + monster.getHp() + "        " + monster.getMonsterName() + " Atk: " + monster.getAtk());
 			System.out.println(monster.getMonsterName() + " HP: " + monsterHP + "        " + monster.getMonsterName() + " Atk: " + monster.getAtk());
 			System.out.print("> ");
 			String command = input.nextLine();
+			
 			if (command.equalsIgnoreCase("Attack"))
 			{
 				monsterHP = this.attack(monster, monsterHP);
@@ -335,15 +335,40 @@ public class Player {
 				}
 				successfulAction = true;
 			}
+			
 			else if (command.equalsIgnoreCase("Escape"))
 			{
-				inCombat = this.escape();
+				inCombat = this.escape(monster);
+				if(inCombat && (!monster.getMonsterName().equalsIgnoreCase("Vampire Queen")))
+				{
+					successfulAction = true;
+				}
 			}
+			
 			else if (command.equalsIgnoreCase("Stat"))
 			{
-				//m.printPlayerStats(player);
 				this.printPlayerStats();
 			}
+			
+			else if(command.equalsIgnoreCase("Help") || command.equalsIgnoreCase("Commands") || command.equalsIgnoreCase("Command"))
+			{
+				try
+				{
+					String file = "COMMANDS";
+					FileReader fr = new FileReader(file);
+					Scanner scan = new Scanner(fr);
+					while(scan.hasNextLine())
+					{
+						System.out.println(scan.nextLine());
+					}
+					scan.close();
+				}
+				catch(FileNotFoundException fr)
+				{
+					System.out.println("COMMANDS file not found");
+				}
+			}
+			
 			else if(command.contains(" "))
 			{
 				int spaceIndex = command.indexOf(" ");
@@ -352,7 +377,6 @@ public class Player {
 				if(firstWord.equalsIgnoreCase("Use"))
 				{
 					Item itemObject = db.getItemList().get(secondWord);
-					//if(this.getInventory().contains(secondWord))
 					if(this.getInventory().contains(itemObject))
 					{
 						int index = this.getInventory().indexOf(secondWord);
@@ -375,6 +399,10 @@ public class Player {
 			if(successfulAction)
 			{
 				monster.monsterAtk(this, monsterHP);
+			}
+			if(this.getHp() <= 0)
+			{
+				break;
 			}
 		}
 		return monster;

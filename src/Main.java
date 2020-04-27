@@ -6,6 +6,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -27,17 +30,12 @@ public class Main {
 	public static void main(String[] args) {
 		Main m = new Main();
 		Database db = new Database();
-		
 		db.readFiles("");
-		
 		int roomInt = 1;
 		int prevRoomInt = 0;
 		boolean loop = true;
 		Player player = db.getPlayer();
-		//System.out.println(player.getCurrentRoom().getRoomName());
 		boolean restarted = false;
-		
-		//RE-ENABLE THE Monster monster CODE BELOW SEVERAL LINES IF THIS DOESN'T HELP
 		Monster monster = db.getMonsterList().get("Human Skeleton");
 		Room currentRoom = player.getCurrentRoom();
 		
@@ -45,53 +43,30 @@ public class Main {
 		{
 			if(restarted)
 			{
-				//roomInt = 1;
-				//System.out.println(player.getCurrentRoom().getRoomID());
 				player = db.getPlayer();
-				//System.out.println(player.getCurrentRoom().getRoomID());
-				//System.out.println("Current room ID: " + player.getCurrentRoom().getRoomID());
 				roomInt = Integer.parseInt(player.getCurrentRoom().getRoomID());
 				restarted = false;
 				currentRoom = player.getCurrentRoom();
 				monster = player.enterRoom(currentRoom, db, m.input);
 			}
-			//player.setCurrentRoom(roomMap.get(roomInt));
-			//player.setCurrentRoom(db.getRoomList().get(roomInt));
-			
 			player.setCurrentRoom(db.getRoomList().get(String.valueOf(roomInt)));
-			
 			currentRoom = player.getCurrentRoom();
 			monster = db.getMonsterList().get("Human Skeleton");
-			
-			//player.setCurrentRoom(currentRoom);
-			
-			//RE-ENABLE IF CODE GETS BUSTED
-			//Room currentRoom = player.getCurrentRoom();
-			//Monster monster = db.getMonsterList().get("Human Skeleton");
-			
 			boolean itemUsed = false;
-			
-			//System.out.println("Room Int: " + roomInt);
-			//System.out.println("Prev Int: " + prevRoomInt);
-			
 			if(roomInt != prevRoomInt)
 			{
-				//System.out.println(currentRoom.getRoomName());
 				if(!restarted)
 				{
 					monster = player.enterRoom(currentRoom, db, m.input);
 				}
 				restarted = false;
-				//monster = player.enterRoom(currentRoom, db, m.input);
-				
-				//System.out.println(currentRoom.getRoomName());
-				//System.out.println(currentRoom.getRoomDescription());
 				if(currentRoom.isWasVisitedPreviously())
 				{
 					System.out.println("This room looks familiar.");
 				}
 				prevRoomInt = Integer.parseInt(currentRoom.getRoomID());
 			}
+			
 			//The input for Solving Puzzles
 			//Puzzles will automatically ask for the user to solve them once they enter a Room with a puzzle that has more than 0 attempts.
 			if(!(currentRoom.getPuzzle() == null))
@@ -99,10 +74,9 @@ public class Main {
 				if(!currentRoom.getPuzzle().isSolved())
 				{
 					Puzzle puzzle = currentRoom.getPuzzle();
-					//System.out.println(puzzle.getDescription());
-					System.out.println(puzzle.getPuzzlePrompt());
+					System.out.println("    " + puzzle.getPuzzlePrompt());
 					int attempts = 3;
-					String[] solution = puzzle.getPuzzleSolution();
+					ArrayList<String> solution = puzzle.getPuzzleSolution();
 					HashMap<String, String> solMap = new HashMap<String, String>();
 					for(String line : solution)
 					{
@@ -121,13 +95,6 @@ public class Main {
 								player.setHp(player.getHp() + puzzle.getPuzzleReward());
 								System.out.println("    You have been healed for " + puzzle.getPuzzleReward() + " HP. You now have " + player.getHp());
 							}
-							/*
-							else
-							{
-								System.out.println("    A " + puzzle.getItem().getItemName() + " has been added to your inventory!");
-								player.addItem(puzzle.getItem());
-							}
-							*/
 							System.out.println("    A " + puzzle.getItem().getItemName() + " has been added to your inventory!");
 							player.addItem(puzzle.getItem());
 							
@@ -143,6 +110,24 @@ public class Main {
 							db.getPuzzleList().put(puzzle.getItemID(), puzzle);
 							db.getRoomList().put(currentRoom.getRoomID(), currentRoom);
 						}
+						else if(puzzleCommand.equalsIgnoreCase("Help") || puzzleCommand.equalsIgnoreCase("Commands") || puzzleCommand.equalsIgnoreCase("Command"))
+						{
+							try
+							{
+								String file = "COMMANDS";
+								FileReader fr = new FileReader(file);
+								Scanner scan = new Scanner(fr);
+								while(scan.hasNextLine())
+								{
+									System.out.println(scan.nextLine());
+								}
+								scan.close();
+							}
+							catch(FileNotFoundException fr)
+							{
+								System.out.println("COMMANDS file not found");
+							}
+						}
 						else
 						{
 							
@@ -152,7 +137,7 @@ public class Main {
 								System.out.println("    The answer you provided is wrong. Try again or 'Skip'. You still have " + attempts + " attempts left.");
 								if(attempts == 1)
 								{
-									System.out.println(puzzle.getPuzzleHint());
+									System.out.println("    " + puzzle.getPuzzleHint());
 								}
 							}
 							else
@@ -168,7 +153,7 @@ public class Main {
 				}
 			}
 			String command = "";
-			if(!monster.getMonsterName().equalsIgnoreCase("Vampire Queen"))
+			if(!monster.getMonsterName().equalsIgnoreCase("Vampire Queen") && player.getHp() > 0)
 			{
 				System.out.println("Which direction do you want to go? (N, E, W, S)");
 				System.out.print("> ");
@@ -346,13 +331,26 @@ public class Main {
 			{
 				
 			}
-			/*
-			else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
+			
+			else if(command.equalsIgnoreCase("Help") || command.equalsIgnoreCase("Commands") || command.equalsIgnoreCase("Command"))
 			{
-				String num = command.substring(command.length() - 1);
-				db = db.readFiles(num);
+				try
+				{
+					String file = "COMMANDS";
+					FileReader fr = new FileReader(file);
+					Scanner scan = new Scanner(fr);
+					while(scan.hasNextLine())
+					{
+						System.out.println(scan.nextLine());
+					}
+					scan.close();
+				}
+				catch(FileNotFoundException fr)
+				{
+					System.out.println("COMMANDS file not found");
+				}
 			}
-			*/
+			
 			else if(command.equalsIgnoreCase("Exit"))
 			{
 				System.out.println("You have exited the game.");
@@ -469,7 +467,6 @@ public class Main {
 					db.readFiles("");
 					monster = db.getMonsterList().get(monster.getMonsterName());
 					player = db.getPlayer();
-					System.out.println("    New game room: " + player.getCurrentRoom().getRoomName());
 					currentRoom = player.getCurrentRoom();
 					roomInt = Integer.parseInt(currentRoom.getRoomID());
 					prevRoomInt = 0;
@@ -497,7 +494,7 @@ public class Main {
 			}
 			//monster.setHp(0);
 			//if(monster.getMonsterName().equalsIgnoreCase("Human Skeleton"))
-			if(monster.getMonsterName().equalsIgnoreCase("Vampire Queen"))
+			if(monster.getMonsterName().equalsIgnoreCase("Vampire Queen") && monster.getHp() <= 0)
 			{
 				System.out.println("   The Vampire Queen crumples to her knees. Despite being undead, her breathing is ragged to the point of exhaustion. As she backs up into the"
 						+ "\nfirey light of the torch, her features become more defined. You now realize her vicious red eyes were actually red with tears, and that her"

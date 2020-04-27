@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Database {
-	//public HashMap<String, Item> itemList = new HashMap<String, Item>();
+	
 	private HashMap<String, Item> itemList = new HashMap<String, Item>();
 	public HashMap<String, Item> itemListNum = new HashMap<String, Item>();
 	public HashMap<String, Monster> monsterList = new HashMap<String, Monster>();
@@ -20,13 +20,9 @@ public class Database {
 	private ArrayList<Monster> baseRoom = new ArrayList<Monster>();
 	private ArrayList<Monster> hallRoom = new ArrayList<Monster>();
 	private ArrayList<Monster> cathRoom = new ArrayList<Monster>();
-	public Player player;//If an Item's Room is 0, add it to player.addInventory()
+	public Player player;
 	public Scanner scan;
 	
-	
-	//BOOKMARK
-	//When loading a save, then create a new Database???
-	//public Database(Room room)
 	public Database() {
 		this.itemList = itemList;
 		this.itemListNum = itemListNum;
@@ -132,23 +128,18 @@ public class Database {
 	}
 	
 	public void readFiles(String fileNum)
-	//public Database readFiles(String fileNum)
 	{
 		Database db = new Database();
 		this.itemList = new HashMap<String, Item>();
 		this.itemListNum = new HashMap<String, Item>();
 		this.monsterList = new HashMap<String, Monster>();
-		this.puzzleList = new HashMap<String, Puzzle>();//0 Puzzle doesn't exist
+		this.puzzleList = new HashMap<String, Puzzle>();
 		this.roomList = new HashMap<String, Room>();
-		//player = new Player(roomList.get("1"));
-		//readItems int itemID[0], name[1], desc[2], type[3], action[4], int value[5]
-		//Integer.parseInt(text[0])
-		//for(Map.Entry<String, Item> entry : itemList.entrySet())
+
 		if(fileNum.equals("") || fileNum.equals("1") || fileNum.equals("2") || fileNum.equals("3"))
 		{
 			try
 			{
-				//String file = "items" + fileNum;
 				String file = "items";
 				FileReader fr = new FileReader(file);
 				scan = new Scanner(fr);
@@ -158,7 +149,6 @@ public class Database {
 					Item item = new Item(text[0], text[1], text[2], text[3], text[4], Integer.parseInt(text[5]));
 					itemList.put(item.getItemName(), item);
 					itemListNum.put(item.getItemID(), item);
-					//itemList.put(item.getItemName(), item);
 				}
 			}
 			catch(FileNotFoundException fr)
@@ -187,7 +177,13 @@ public class Database {
 					String itemID = text[7];
 					boolean isSolved = Boolean.parseBoolean(text[8]);
 
-					String[] solutions = sol.split(",");
+					String[] solArray = sol.split(",");
+					
+					ArrayList<String> solutions = new ArrayList<String>();
+					for(String line : solArray)
+					{
+						solutions.add(line);
+					}
 					
 					Puzzle puzzle = new Puzzle(id, room, prompt, hint, solutions, reward, dmg, itemID, isSolved);
 					if(!(itemID.equalsIgnoreCase("0")))
@@ -201,13 +197,6 @@ public class Database {
 			{
 				System.out.println("Failed to read Puzzles");
 			}
-			
-			/*
-			for(Map.Entry<String, Item> entry : itemList.entrySet())
-			{
-				System.out.println("Got " + entry.getValue().getItemName());
-			}
-			*/
 			
 			//readMonster int ID[0], name[1], desc[2], String[] room[3], int[] aprRate[4], droppedItem[5], int dropChance[6], int hp[7], int atk[8]
 			try
@@ -246,20 +235,10 @@ public class Database {
 						aprRateI.add(Integer.parseInt(aprRateS[i]));
 					}
 					
-					//System.out.println(itemID);
 					Item item = itemList.get(itemID);
-					//System.out.println(name);
 					
 					Monster monster = new Monster(id, name, desc, rooms, aprRateI, item, dropRate, hp, atk);
 					monsterList.put(monster.getMonsterName(), monster);
-					
-					//Iterating though floors to put the Monsters in the FloorList
-					/*
-					private ArrayList<Monster> topRoom = new ArrayList<Monster>();
-					private ArrayList<Monster> secondRoom = new ArrayList<Monster>();
-					private ArrayList<Monster> firstRoom = new ArrayList<Monster>();
-					private ArrayList<Monster> baseRoom = new ArrayList<Monster>();
-					*/
 					for(String line : rooms)
 					{
 						if(line.equalsIgnoreCase("Top Floor"))
@@ -287,20 +266,6 @@ public class Database {
 							cathRoom.add(monster);
 						}
 					}
-					/*
-					for(Map.Entry<String, Room> entry : roomList.entrySet())
-					{
-						Room room = entry.getValue();
-						for(int i = 0; i < rooms.length; i++)
-						{
-							if(entry.getKey().equalsIgnoreCase(rooms[i]))
-							{
-								room.addMonster(monster);
-							}
-						}
-						roomList.put(room.getRoomName(), room);
-					}
-					*/
 				}
 			}
 			catch(FileNotFoundException fr)
@@ -341,11 +306,6 @@ public class Database {
 
 
 					Room room = new Room(id, name, desc, north, south, east, west, itemID, puzzleID, floor);
-
-					//set Room's Inventory(Multiple Items seperated by a comma), Monsters (Multiple Monsters seperate by a comma), Puzzle
-					//SET MONSTERS AT MONSTER???
-
-					//room.setInventory();
 					for(String key : itemID)
 					{
 						if(!(key.equalsIgnoreCase("0")))
@@ -361,13 +321,6 @@ public class Database {
 						room.setPuzzle(puzzle);
 					}
 					
-					//Iterating though floors to put the ArrayList of Monsters to Room.addMosnter(monster) them
-					/*
-					private ArrayList<Monster> topRoom = new ArrayList<Monster>();
-					private ArrayList<Monster> secondRoom = new ArrayList<Monster>();
-					private ArrayList<Monster> firstRoom = new ArrayList<Monster>();
-					private ArrayList<Monster> baseRoom = new ArrayList<Monster>();
-					*/
 					if(floor.equalsIgnoreCase("Top Floor"))
 					{
 						for(Monster monster : topRoom)
@@ -438,22 +391,7 @@ public class Database {
 					int def = Integer.parseInt(scan.nextLine());
 					String weaponName = scan.nextLine();
 					String armorName = scan.nextLine();
-					//boolean inCombat = Boolean.parseBoolean(scan.nextLine());
-					//String monsterName = scan.nextLine();
 					
-					/*
-					System.out.println("Item: " + items);
-					System.out.println("Room num: " + roomNum);
-					System.out.println("HP: " + hp);
-					System.out.println("Atk: " + atk);
-					System.out.println("Def: " + def);
-					System.out.println("Weapon: " + weaponName);
-					System.out.println("Armor: " + armorName);
-					System.out.println("Is in combat: " + inCombat);
-					System.out.println("Monster: " + monsterName);
-					*/
-					
-					//HashMap<String, Item> inventory = new HashMap<String, Item>();
 					ArrayList<Item> inventory = new ArrayList<Item>();
 					
 					if(items.contains(";"))
@@ -464,26 +402,20 @@ public class Database {
 							if(!(items.contains(",")))
 							{
 								Item item = db.getItemList().get(line);
-								//inventory.add(item);
 								if(db.getItemList().containsKey(line))
 								{
 									inventory.add(item);
 								}
-								//inventory.put(items, item);
 							}
 							else
 							{
 								String[] lineArray2 = line.split(",");
-								//Item item = db.getItemList().get(lineArray2[0]);
-								//item.setUseValue(Integer.parseInt(lineArray2[1]));
-								//inventory.add(item);
 								if(db.getItemList().containsKey(items))
 								{
 									Item item = db.getItemList().get(lineArray2[0]);
 									item.setUseValue(Integer.parseInt(lineArray2[1]));
 									inventory.add(item);
 								}
-								//inventory.put(item.getItemName(), item);
 							}
 						}
 					}
@@ -492,26 +424,20 @@ public class Database {
 						if(!(items.contains(",")))
 						{
 							Item item = db.getItemList().get(items);
-							//inventory.add(item);
 							if(db.getItemList().containsKey(items))
 							{
 								inventory.add(item);
 							}
-							//inventory.put(item.getItemName(), item);
 						}
 						else
 						{
 							String[] lineArray2 = items.split(",");
-							//Item item = db.getItemList().get(lineArray2[0]);
-							//item.setUseValue(Integer.parseInt(lineArray2[1]));
-							//inventory.add(item);
 							if(db.getItemList().containsKey(items))
 							{
 								Item item = db.getItemList().get(lineArray2[0]);
 								item.setUseValue(Integer.parseInt(lineArray2[1]));
 								inventory.add(item);
 							}
-							//inventory.put(item.getItemName(), item);
 						}
 					}
 					
@@ -526,11 +452,6 @@ public class Database {
 							if(inventory.get(i).getItemName().equals(weaponArray[0]))
 							{
 								weapon = inventory.get(i);
-								/*
-								weapon.setUseValue(Integer.parseInt(weaponArray[1]));
-								inventory.remove(i);
-								inventory.add(weapon);
-								*/
 								break;
 							}
 						}
@@ -545,43 +466,22 @@ public class Database {
 							if(inventory.get(i).getItemName().equals(armorArray[0]))
 							{
 								armor = inventory.get(i);
-								/*
-								armor.setUseValue(Integer.parseInt(armorArray[1]));
-								inventory.remove(i);
-								inventory.add(armor);
-								*/
 								break;
 							}
 						}
 					}
-					
-					/*
-					Monster monster = null;
-					if(monsterList.containsKey(monsterName))
-					{
-						monster = monsterList.get(monsterName);
-					}
-					*/
-					
-					//this.player = new Player(inventory, room, hp, atk, def, weapon, armor, inCombat, monster);
-					//this.player = new Player(inventory, room, hp, atk, def, weapon, armor, inCombat, monster);
 					this.player = new Player(inventory, room, hp, atk, def, weapon, armor);
-					//System.out.println(player.getCurrentRoom().getRoomName());
 				}
 			}
 			catch(FileNotFoundException fr)
 			{
 				System.out.println("Failed to read Rooms");
 			}
-			
-			//System.out.println("Files read");
 		}
 		else
 		{
 			System.out.println("Unacceptable Load command. Please use command 'Load1', 'Load2', or 'Load3' to properly load saved data.");
 		}
-		
-		//return db;
 	}
 	
 	public void saveFiles(String fileNum)
@@ -590,74 +490,75 @@ public class Database {
 		{
 			System.out.println("Saving puzzles");
 			String file = "puzzles" + fileNum;
-			try
+
+			for(Map.Entry<String, Puzzle> entry : this.getPuzzleList().entrySet())
 			{
-				System.out.println("File name: " + file);
-				PrintWriter pw = new PrintWriter(file);
-				
-				//6;															String ID
-				//19;															String RoomID
-				//What do you call a bear without an ear?;						String Prompt
-				//This has more to do with the word itself than the animal.;	String Hint
-				//b,a b,a "b";													String[] solution --> String
-				//2;															int reward --> String
-				//2;															int dmg --> String
-				//14;															String itemID
-				//false															boolean isSolved --> String
-				
-				//list = this.getPuzzleList();
-				for(Map.Entry<String, Puzzle> entry : this.getPuzzleList().entrySet())
+				try
 				{
-					Puzzle puzzle = entry.getValue();
-					String id = puzzle.getItemID();
-					//System.out.println(id);
-					String roomID = puzzle.getRoomLocation();
-					String prompt = puzzle.getPuzzlePrompt();
-					String hint = puzzle.getPuzzleHint();
-					String[] sol = puzzle.getPuzzleSolution();
-					String reward = String.valueOf(puzzle.getPuzzleReward());
-					String dmg = String.valueOf(puzzle.getPuzzleDamage());
-					
-					String itemID = puzzle.getItem().getItemID();
-					
-					
-					String isSolved = String.valueOf(puzzle.isSolved());
-					
-					pw.print(id + ";");
-					pw.print(roomID + ";");
-					pw.print(prompt + ";");
-					pw.print(hint + ";");
-					
-					String solutions = "";
-					for(String line : sol)
+					PrintWriter pw = new PrintWriter(file);
+
+					//6;															String ID
+					//19;															String RoomID
+					//What do you call a bear without an ear?;						String Prompt
+					//This has more to do with the word itself than the animal.;	String Hint
+					//b,a b,a "b";													String[] solution --> String
+					//2;															int reward --> String
+					//2;															int dmg --> String
+					//14;															String itemID
+					//false															boolean isSolved --> String
+
+					int filesScanned = 0;
+					while(filesScanned < this.getPuzzleList().size())
 					{
-						solutions = solutions + sol + ",";
+						Puzzle puzzle = entry.getValue();
+						String id = puzzle.getItemID();
+						String roomID = puzzle.getRoomLocation();
+						String prompt = puzzle.getPuzzlePrompt();
+						String hint = puzzle.getPuzzleHint();
+						ArrayList<String> sol = puzzle.getPuzzleSolution();
+						String reward = String.valueOf(puzzle.getPuzzleReward());
+						String dmg = String.valueOf(puzzle.getPuzzleDamage());
+
+						String itemID = puzzle.getItem().getItemID();
+
+
+						String isSolved = String.valueOf(puzzle.isSolved());
+
+						pw.print(id + ";");
+						pw.print(roomID + ";");
+						pw.print(prompt + ";");
+						pw.print(hint + ";");
+
+						String solutions = "";
+						for(String line : sol)
+						{
+							solutions = solutions + sol + ",";
+						}
+						solutions = solutions.substring(0, solutions.length() - 1);
+						pw.println(solutions + ";");
+
+						pw.print(reward + ";");
+						pw.print(dmg + ";");
+						pw.print(itemID + ";");
+						pw.println(isSolved);
+						filesScanned++;
 					}
-					solutions = solutions.substring(0, solutions.length() - 1);
-					pw.println(solutions + ";");
-					
-					pw.print(reward + ";");
-					pw.print(dmg + ";");
-					pw.print(itemID + ";");
-					pw.println(isSolved);
 					pw.close();
 				}
+				catch(FileNotFoundException fe)
+				{
+					System.out.println("File " + file + " failed to save");
+				}
 			}
-			catch(FileNotFoundException fe)
-			{
-				System.out.println("File " + file + " failed to save");
-			}
-			
+
+
 			System.out.println("Saving rooms");
 			file = "rooms" + fileNum;
-			try
+			for(Map.Entry<String, Room> entry : this.getRoomList().entrySet())
 			{
-				System.out.println("File name: " + file);
-				PrintWriter pw = new PrintWriter(file);
-				
-				
-				for(Map.Entry<String, Room> entry : this.getRoomList().entrySet())
+				try
 				{
+					PrintWriter pw = new PrintWriter(file);
 					//26;				String id
 					//Servant Quarters;	String name
 					//Burning torches;	String desc
@@ -668,50 +569,57 @@ public class Database {
 					//0;				String[] itemIDs --> String
 					//7;				String puzzleID
 					//Basement			String floor
-					
-					Room room = entry.getValue();
-					String id = room.getRoomID();
-					String name = room.getRoomName();
-					String n = room.getroomToTheNorth();
-					String s = room.getroomToTheSouth();
-					String e = room.getroomToTheEast();
-					String w = room.getroomToTheWest();
-					String[] itemIDs = room.getItemID();
-					String puzzleID = room.getpuzzleID();
-					String floor = room.getFloor();
-					
-					pw.print(id + ";");
-					pw.print(name + ";");
-					pw.print(n + ";");
-					pw.print(s + ";");
-					pw.print(e + ";");
-					pw.print(w + ";");
-					
-					String items = "";
-					for(String line : itemIDs)
+
+					int filesScanned = 0;
+					while(filesScanned < this.getRoomList().size())
 					{
-						items = items + line + ",";
+						Room room = entry.getValue();
+						String id = room.getRoomID();
+						String name = room.getRoomName();
+						String n = room.getroomToTheNorth();
+						String s = room.getroomToTheSouth();
+						String e = room.getroomToTheEast();
+						String w = room.getroomToTheWest();
+						String[] itemIDs = room.getItemID();
+						String puzzleID = room.getpuzzleID();
+						String floor = room.getFloor();
+
+						pw.print(id + ";");
+						pw.print(name + ";");
+						pw.print(n + ";");
+						pw.print(s + ";");
+						pw.print(e + ";");
+						pw.print(w + ";");
+
+						String items = "";
+						for(String line : itemIDs)
+						{
+							items = items + line + ",";
+						}
+						items = items.substring(0, items.length() - 1);
+						pw.print(items);
+
+						pw.print(puzzleID + ";");
+						pw.println(floor);
+						filesScanned++;
 					}
-					items = items.substring(0, items.length() - 1);
-					pw.print(items);
-					
-					pw.print(puzzleID + ";");
-					pw.println(floor);
+
 					pw.close();
 				}
+				catch(FileNotFoundException fe)
+				{
+					System.out.println("File " + file + " failed to save");
+				}
 			}
-			catch(FileNotFoundException fe)
-			{
-				System.out.println("File " + file + " failed to save");
-			}
-			
+
 			file = "Player" + fileNum;
 			System.out.println("Saving Player");
+
 			try
 			{
 				System.out.println("File name: " + file);
 				PrintWriter pw = new PrintWriter(file);
-				
+
 				//Inventory		ArrayList<Item> --> String
 				//curRoom		Room.getID --> String
 				//hp			int --> String
@@ -721,19 +629,24 @@ public class Database {
 				//armor,def		Item --> String
 				//inCombat		boolean --> String
 				//monster		Monster --> String
-				
+
 				ArrayList<Item> inv = player.getInventory();
 				String curRoom = player.getCurrentRoom().getRoomID();
 				String hp = String.valueOf(player.getHp());
 				String atk = String.valueOf(player.getAtkDmg());
 				String def = String.valueOf(player.getDef());
-				//String weapon = player.getEquippedWeapon().getItemName() + "," + player.getEquippedWeapon().getUseValue();
-				//String armor = player.getEquippedArmor().getItemName() + "," + player.getEquippedArmor().getUseValue();
 				String weapon = player.getWeaponName() + "," + player.getWeaponValue();
 				String armor = player.getArmorName() + "," + player.getArmorValue();
-				//String inCombat = String.valueOf(player.isInCombat());
-				//String monster = player.getMonster().getMonsterName();
-				
+
+				if(weapon.length() == 1)
+				{
+					weapon = "";
+				}
+				if(armor.length() == 1)
+				{
+					armor = "";
+				}
+
 				String inventory = "";
 				if(inv.size() > 0)
 				{
@@ -743,7 +656,7 @@ public class Database {
 						inventory = inventory + line + ",";
 					}
 				}
-				
+
 				pw.println(inventory);
 				pw.println(curRoom);
 				pw.println(hp);
@@ -751,10 +664,8 @@ public class Database {
 				pw.println(def);
 				pw.println(weapon);
 				pw.println(armor);
-				//pw.println(inCombat);
-				//pw.println(monster);
 				pw.close();
-				
+
 			}
 			catch(FileNotFoundException fe)
 			{
@@ -765,10 +676,5 @@ public class Database {
 		{
 			System.out.println("Unacceptable Save command. Please use command 'Save1', 'Save2', or 'Save3' to properly save data.");
 		}
-	}
-	
-	public void eraseLists()
-	{
-		//erase;
 	}
 }
