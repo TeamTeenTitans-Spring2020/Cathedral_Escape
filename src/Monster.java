@@ -86,28 +86,31 @@ public class Monster {
 	 */
 	//TO DO
 	//Return a boolean that shows if the player is dead/Alive???
-	public void monsterAtk(Player player)
+	public void monsterAtk(Player player, int monsterHP)
 	{
-		if(this.hp > 0)
+		if(monsterHP > 0)
 		{
 			int hitNum = (int)(Math.random() * 100);
-			System.out.println("Hit Num: " + hitNum);
+			//System.out.println("Hit Num: " + hitNum);
 			if(hitNum > 9)
 			{
 				int dmg = this.atk;
-				System.out.println("The monster attacks you for " + dmg + " damage!");
+				System.out.println("    The monster attacks you for " + dmg + " damage!");
 				player.setHp(player.getHp() - dmg);
 			}
 			else
 			{
-				System.out.println("The monster missed!");
+				System.out.println("    The monster missed!");
 			}
 			if(this.getMonsterName().equalsIgnoreCase("Vampire Queen"))
 			{
-				this.setHp(this.getHp() + 10);
-				if(this.getHp() > 150)
+				//this.setHp(this.getHp() + 10);
+				monsterHP += 10;
+				//if(this.getHp() > 150)
+				if(monsterHP > 150)
 				{
-					this.setHp(150);
+					//this.setHp(150);
+					monsterHP = 150;
 				}
 				System.out.println("The Vampire Queen is regenerating her HP!");
 			}
@@ -118,8 +121,12 @@ public class Monster {
 			//System.out.println("Item Drop Number (0 - 99): " + lootNum);
 			if(lootNum <= this.getItemDropChance())
 			{
-				System.out.println("You got a " + this.getItemDropped().getItemName());
+				System.out.println("    You got a " + this.getItemDropped().getItemName());
 				player.addItem(this.getItemDropped());
+			}
+			if(this.getMonsterName().equalsIgnoreCase("Vampire Queen"))
+			{
+				this.setHp(0);
 			}
 		}
 	}

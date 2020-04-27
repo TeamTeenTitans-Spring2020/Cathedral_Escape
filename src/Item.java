@@ -93,7 +93,7 @@ public class Item {
 		System.out.println(this.getItemName() + " has been dropped successfully from the player inventory and placed in " + room.getRoomName() + ".");
 	}
 	
-	/* unequipItem(Player player)
+	/* equipItem(Player player)
 	 * Player player- The player the item is being equipped to.
 	 * Allows the equipping of items. Adding the equipped item's bonus Attack Damage to the Player's total Attack Damage. (Only Sword can be equipped)
 	 */
@@ -105,23 +105,24 @@ public class Item {
 		}
 		else
 		{
-			int initial = player.getAtkDmg();
 			if(player.getEquippedArmor() == this || player.getEquippedWeapon() == this)
 			{
 				System.out.println(this.itemName + " cannot be equipped. " + this.itemName + " is already equipped.");
 			}
 			else if(this.itemType.equalsIgnoreCase("Weapon"))
 			{
+				int initial = player.getAtkDmg();
 				int totalDmg = initial + this.useValue;
 				player.setAtkDmg(totalDmg);
-				System.out.println(this.itemName + " equipped. Your Attack Damage increased to: " + totalDmg);
+				System.out.println("    " + this.itemName + " has been equipped. Your Attack Damage increased to: " + totalDmg);
 				player.setEquippedWeapon(this);
 			}
 			else if(this.itemType.equalsIgnoreCase("Armor"))
 			{
+				int initial = player.getDef();
 				int totalDef = initial + this.useValue;
 				player.setDef(totalDef);
-				System.out.println(this.itemName + " equipped. Your Defense has increased to: " + totalDef);
+				System.out.println("    " + this.itemName + " has been equipped. Your Defense has increased to: " + totalDef);
 				player.setEquippedArmor(this);
 			}
 		}
@@ -144,7 +145,7 @@ public class Item {
 				int initial = player.getAtkDmg();
 				int totalDmg = initial - this.useValue;
 				player.setAtkDmg(totalDmg);
-				System.out.println(this.itemName + " unequipped. Your Attack Damage decreased to: " + totalDmg);
+				System.out.println(this.itemName + " has been unequipped. Your Attack Damage decreased to: " + totalDmg);
 				player.setEquippedWeapon(null);
 			}
 			else if(this.itemType.equalsIgnoreCase("Armor"))
@@ -152,7 +153,7 @@ public class Item {
 				int initial = player.getDef();
 				int totalDef = initial - this.useValue;
 				player.setDef(totalDef);
-				System.out.println(this.itemName + " unequipped. Your Defense decreased to: " + totalDef);
+				System.out.println(this.itemName + " has been unequipped. Your Defense decreased to: " + totalDef);
 				player.setEquippedArmor(null);
 			}
 		}
