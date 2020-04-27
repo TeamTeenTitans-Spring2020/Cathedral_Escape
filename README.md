@@ -11,7 +11,8 @@ solving them will reward the player with items and equipment. The goal is to esc
 what is happening in the cathedral.
 
 
-
+## Characters
+Through the Cathedral, there is no one here but monsters, ranging from a Human Skeleton, Undead Hound, Zombie to even a Vampire Queen. 
 
 ## Game Commands
 | Command           | Description                                                                                                |
