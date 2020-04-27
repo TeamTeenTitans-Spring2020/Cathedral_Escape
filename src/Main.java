@@ -40,6 +40,7 @@ public class Main {
 		//RE-ENABLE THE Monster monster CODE BELOW SEVERAL LINES IF THIS DOESN'T HELP
 		Monster monster = db.getMonsterList().get("Human Skeleton");
 		Room currentRoom = player.getCurrentRoom();
+		
 		do
 		{
 			if(restarted)
@@ -127,7 +128,7 @@ public class Main {
 							db.getPuzzleList().put(puzzle.getItemID(), puzzle);
 							db.getRoomList().put(currentRoom.getRoomID(), currentRoom);
 						}
-						else if(puzzleCommand.equalsIgnoreCase("ignore"))
+						else if(puzzleCommand.equalsIgnoreCase("Skip"))
 						{
 							System.out.println("    You ignored the puzzle");
 							puzzle.setSolved(true);
@@ -193,22 +194,36 @@ public class Main {
 				
 				if(firstWord.equalsIgnoreCase("Inspect"))
 				{
+					System.out.println("First : " + firstWord);
+					System.out.println("Second: " + secondWord);
+					//int indexP = player.getInventory().indexOf(secondWord);
+					int indexP = player.getInventory().indexOf(db.getItemList().get(secondWord));
+					
 					//Inspecting the Player's inventory
 					if(secondWord.equalsIgnoreCase("Inventory"))
 					{
+						System.out.println("    Inspecting Inventory");
 						player.examineInventory();
 					}
-					
 					//Inspecting an Item in the Player's inventory
-					else if(player.getInventory().contains(secondWord))
+					//else if(player.getInventory().contains(secondWord))
+					//else if(player.getInventory().contains(player.getInventory().get(index)))
+					else if(indexP > -1)
 					{
-						int index = player.getInventory().indexOf(secondWord);
-						player.getInventory().get(index).examineItem();
+						//int index = player.getInventory().indexOf(secondWord);
+						//player.getInventory().get(index).examineItem();
+						System.out.println("    Inspecting " + secondWord);
+						player.examineItem(indexP);
 					}
 					//Inspecting an Item in a Room's inventory
 					else if(currentRoom.getInventory().containsKey(secondWord))
 					{
+						System.out.println("    Inspecting " + secondWord);
 						currentRoom.getInventory().get(secondWord).examineItem();
+					}
+					else
+					{
+						System.out.println("Failed to Inspect item.");
 					}
 				}
 				
@@ -332,10 +347,12 @@ public class Main {
 				System.exit(0);
 			}
 			
-			if(command.equalsIgnoreCase("Start New Game"))
+			else if(command.equalsIgnoreCase("Start"))
 			{
-				db = new Database();
+				//db = new Database();
 				//db = db.readFiles("");
+				System.out.println("    You are starting a new game");
+				db.readFiles("");
 				monster = db.getMonsterList().get(monster.getMonsterName());
 			}
 			else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
@@ -409,25 +426,34 @@ public class Main {
 					}
 					else
 					{
-						System.out.println("You can't go that way. There's a wall.");
+						System.out.println("    You can't go that way. There's a wall.");
 					}
 				}
 			}
+			else
+			{
+				System.out.println("    Invalid input. This is not a proper command.");
+			}
 			while(player.getHp() <= 0)
 			{
-				System.out.println("You choke on your last breath as you see the last of your blood spill from your body. Game over.");
+				System.out.println("    You choke on your last breath as you see the last of your blood spill from your body. Game over.");
 				System.out.println("Would you like to 'Start' a new game, 'Load' a pre-existing save, or 'Exit' the game?");
 				command = m.input.nextLine();
 				String num = command.substring(command.length() - 1);
 				if(command.equalsIgnoreCase("Start"))
 				{
-					db = new Database();
+					//db = new Database();
 					//db = db.readFiles("");
+					System.out.println("    You are starting a new game");
+					db.readFiles("");
+					monster = db.getMonsterList().get(monster.getMonsterName());
 				}
 				else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
 				{
-					db = new Database();
+					//db = new Database();
 					//db = db.readFiles(num);
+					db.readFiles(num);
+					monster = db.getMonsterList().get(monster.getMonsterName());
 				}
 				else if(command.equalsIgnoreCase("Exit"))
 				{
@@ -459,6 +485,7 @@ public class Main {
 					{
 						//db = new Database();
 						//db = db.readFiles("");
+						System.out.println("    You are starting a new game");
 						db.readFiles("");
 						monster = db.getMonsterList().get(monster.getMonsterName());
 					}

@@ -69,7 +69,7 @@ public class Item {
 	 */
 	public void examineItem()
 	{
-		System.out.println(this.getItemDescription());
+		System.out.println("    " + this.getItemDescription());
 	}
 	
 	/* pickupItem(Player player, Room room)
@@ -80,7 +80,7 @@ public class Item {
 		//this.setRoomNum(0);
 		player.addItem(this);
 		room.removeItem(this);
-		System.out.println(this.getItemName() + " has been picked up from the " + room.getRoomName() + " and successfully added to the player inventory.");
+		System.out.println("    " + this.getItemName() + " has been picked up from the " + room.getRoomName() + " and successfully added to the player inventory.");
 	}
 	
 	/* dropItem(Player player, Room room)
@@ -90,7 +90,7 @@ public class Item {
 	{
 		room.addItem(this);
 		player.removeItem(this);
-		System.out.println(this.getItemName() + " has been dropped successfully from the player inventory and placed in " + room.getRoomName() + ".");
+		System.out.println("    " + this.getItemName() + " has been dropped successfully from the player inventory and placed in " + room.getRoomName() + ".");
 	}
 	
 	/* equipItem(Player player)
@@ -145,7 +145,7 @@ public class Item {
 				int initial = player.getAtkDmg();
 				int totalDmg = initial - this.useValue;
 				player.setAtkDmg(totalDmg);
-				System.out.println(this.itemName + " has been unequipped. Your Attack Damage decreased to: " + totalDmg);
+				System.out.println("    " + this.itemName + " has been unequipped. Your Attack Damage decreased to: " + totalDmg);
 				player.setEquippedWeapon(null);
 			}
 			else if(this.itemType.equalsIgnoreCase("Armor"))
@@ -153,7 +153,7 @@ public class Item {
 				int initial = player.getDef();
 				int totalDef = initial - this.useValue;
 				player.setDef(totalDef);
-				System.out.println(this.itemName + " has been unequipped. Your Defense decreased to: " + totalDef);
+				System.out.println("    " + this.itemName + " has been unequipped. Your Defense decreased to: " + totalDef);
 				player.setEquippedArmor(null);
 			}
 		}
@@ -192,7 +192,7 @@ public class Item {
 				player.setHp(playerhp);
 				//player.getInventory().remove(this.itemName);
 				player.removeItem(this);
-				System.out.println("You used " + this.itemName + " to heal " + healed + " HP. You now have " + player.getHp() + " HP. " + this.itemName + " has disappeared from your Inventory.");
+				System.out.println("    You used " + this.itemName + " to heal " + healed + " HP. You now have " + player.getHp() + " HP. " + this.itemName + " has disappeared from your Inventory.");
 				return true;
 			}
 		}

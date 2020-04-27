@@ -151,6 +151,12 @@ public class Player {
 		}
 	}
 	
+	//BOOKMARK TO DO
+	//CREATE INDIVIDUAL EXAMINEITEM()
+	public void examineItem(int index) {
+		System.out.println("    " + this.getInventory().get(index).getItemDescription());
+	}
+	
 	public int attack(Monster monster, int monsterHP)
 	{
 		int hitNum = (int)(Math.random() * 100);
