@@ -178,8 +178,9 @@ public class Database {
 					boolean isSolved = Boolean.parseBoolean(text[8]);
 
 					String[] solutions = sol.split(",");
-
+					
 					Puzzle puzzle = new Puzzle(id, room, prompt, hint, solutions, reward, dmg, itemID, isSolved);
+					puzzle.setItem(itemListNum.get(itemID));
 					puzzleList.put(puzzle.getPuzzleID(), puzzle);
 				}
 			}
@@ -414,7 +415,7 @@ public class Database {
 			//boolean inCombat[7], ;;;String[] Monster monster[8];;;
 
 
-			System.out.println("Files read");
+			//System.out.println("Files read");
 		}
 		else
 		{

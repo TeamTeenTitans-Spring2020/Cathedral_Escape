@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 
 public class Room {
 	// Creates attributes of the objects
+	//BOOKMARK
+	//Add an ArrayList of exits???
 	private String roomID;
 	private String roomName;
 	private String roomDescription;
