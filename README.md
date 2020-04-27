@@ -38,7 +38,14 @@ what is happening in the cathedral.
 
 ![topfloorplayer](https://user-images.githubusercontent.com/27105173/80430104-aebb6500-88bb-11ea-9dae-5749a75c8d04.PNG)
 
+### Second Floor
+
+![secondfloorplayer](https://user-images.githubusercontent.com/27105173/80430460-aadc1280-88bc-11ea-9376-c0d600a4667f.PNG)
+
 
 ### First Floor
 ![playerstuff](https://user-images.githubusercontent.com/27105173/80430254-1ec9eb00-88bc-11ea-8bbb-e81b5f751e55.PNG)
+
+### Basement 
+![basementplayer](https://user-images.githubusercontent.com/27105173/80430504-c515f080-88bc-11ea-9c58-2ff0d6bfffd9.PNG)
 
