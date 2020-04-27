@@ -121,18 +121,23 @@ public class Main {
 								player.setHp(player.getHp() + puzzle.getPuzzleReward());
 								System.out.println("    You have been healed for " + puzzle.getPuzzleReward() + " HP. You now have " + player.getHp());
 							}
+							/*
 							else
 							{
 								System.out.println("    A " + puzzle.getItem().getItemName() + " has been added to your inventory!");
 								player.addItem(puzzle.getItem());
 							}
+							*/
+							System.out.println("    A " + puzzle.getItem().getItemName() + " has been added to your inventory!");
+							player.addItem(puzzle.getItem());
+							
 							puzzle.setSolved(true);
 							db.getPuzzleList().put(puzzle.getItemID(), puzzle);
 							db.getRoomList().put(currentRoom.getRoomID(), currentRoom);
 						}
 						else if(puzzleCommand.equalsIgnoreCase("Skip"))
 						{
-							System.out.println("    You ignored the puzzle");
+							System.out.println("    You skipped the puzzle");
 							puzzle.setSolved(true);
 							attempts = 0;
 							db.getPuzzleList().put(puzzle.getItemID(), puzzle);
@@ -144,7 +149,7 @@ public class Main {
 							attempts -= 1;
 							if(attempts > 0)
 							{
-								System.out.println("    The answer you provided is wrong. Try again or 'Ignore'. You still have " + attempts + " attempts left.");
+								System.out.println("    The answer you provided is wrong. Try again or 'Skip'. You still have " + attempts + " attempts left.");
 								if(attempts == 1)
 								{
 									System.out.println(puzzle.getPuzzleHint());
@@ -208,12 +213,8 @@ public class Main {
 						player.examineInventory();
 					}
 					//Inspecting an Item in the Player's inventory
-					//else if(player.getInventory().contains(secondWord))
-					//else if(player.getInventory().contains(player.getInventory().get(index)))
 					else if(indexP > -1)
 					{
-						//int index = player.getInventory().indexOf(secondWord);
-						//player.getInventory().get(index).examineItem();
 						System.out.println("    Inspecting " + secondWord);
 						player.examineItem(indexP);
 					}
@@ -250,7 +251,6 @@ public class Main {
 				if(firstWord.equalsIgnoreCase("Drop"))
 				{
 					Item itemObject = db.getItemList().get(secondWord);
-					//if(player.getInventory().contains(secondWord))
 					if(player.getInventory().contains(itemObject))
 					{
 						Item item = db.getItemList().get(secondWord);
@@ -267,7 +267,6 @@ public class Main {
 				if(firstWord.equalsIgnoreCase("Equip"))
 				{
 					Item itemObject = db.getItemList().get(secondWord);
-					//if(player.getInventory().contains(secondWord))
 					if(player.getInventory().contains(itemObject))
 					{
 						Item item = db.getItemList().get(secondWord);
@@ -283,7 +282,6 @@ public class Main {
 				if(firstWord.equalsIgnoreCase("Unequip"))
 				{
 					Item itemObject = db.getItemList().get(secondWord);
-					//if(player.getInventory().contains(secondWord))
 					if(player.getInventory().contains(itemObject))
 					{
 						Item item = db.getItemList().get(secondWord);
@@ -299,7 +297,6 @@ public class Main {
 				if(firstWord.equalsIgnoreCase("Use"))
 				{
 					Item itemObject = db.getItemList().get(secondWord);
-					//if(player.getInventory().contains(secondWord))
 					if(player.getInventory().contains(itemObject))
 					{
 						Item item = db.getItemList().get(secondWord);
@@ -342,7 +339,6 @@ public class Main {
 			//Command for looking at the player's hp and attack
 			else if (command.equalsIgnoreCase("Stat"))
 			{
-				//m.printPlayerStats(player);
 				player.printPlayerStats();
 			}
 			
@@ -362,20 +358,8 @@ public class Main {
 				System.out.println("You have exited the game.");
 				System.exit(0);
 			}
-			/*
-			else if(command.equalsIgnoreCase("Start"))
-			{
-				//db = new Database();
-				//db = db.readFiles("");
-				System.out.println("    You are starting a new game");
-				db.readFiles("");
-				monster = db.getMonsterList().get(monster.getMonsterName());
-				player = db.getPlayer();
-				currentRoom = player.getCurrentRoom();
-				roomInt = Integer.parseInt(currentRoom.getRoomID());
-				prevRoomInt = 0;
-			}
-			*/
+
+			//Loading a save
 			else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
 			{
 				String num = command.substring(command.length() - 1);
@@ -389,10 +373,12 @@ public class Main {
 				roomInt = Integer.parseInt(currentRoom.getRoomID());
 				prevRoomInt = 0;
 			}
+			
+			//Saving a file
 			else if(command.equalsIgnoreCase("Save1") || command.equalsIgnoreCase("Save2") || command.equalsIgnoreCase("Save3"))
 			{
 				String num = command.substring(command.length() - 1);
-				db = new Database();
+				//db = new Database();
 				//db = db.readFiles(num);
 				System.out.println("    You are saveing to save" + num);
 				db.saveFiles(num);

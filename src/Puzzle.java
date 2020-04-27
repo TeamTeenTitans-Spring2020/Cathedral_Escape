@@ -137,4 +137,5 @@ public class Puzzle {
 		this.isSolved = isSolved;
 	}
 	
+	
 }

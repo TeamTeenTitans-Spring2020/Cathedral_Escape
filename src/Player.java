@@ -15,8 +15,10 @@ public class Player {
 	int def;
 	Item equippedWeapon;//Read this as a String name. If the Weapon/Sword has a "," then setAtk to the int
 	Item equippedArmor;
-	boolean inCombat;
-	Monster monster;
+	String weaponName;
+	String armorName;
+	String weaponValue;
+	String armorValue;
 	
 	/* Room(Room currentRoom)
 	 * Room currentRoom- The Room the player is currently in.
@@ -30,11 +32,10 @@ public class Player {
 		this.def = 0;
 		this.equippedWeapon = null;
 		this.equippedArmor = null;
-		this.inCombat = false;
 	}
 
 	public Player(ArrayList<Item> inventory, Room currentRoom, int hp, int atkDmg, int def, Item equippedWeapon,
-			Item equippedArmor, boolean inCombat, Monster monster) {
+			Item equippedArmor) {
 		super();
 		this.inventory = inventory;
 		this.currentRoom = currentRoom;
@@ -43,8 +44,6 @@ public class Player {
 		this.def = def;
 		this.equippedWeapon = equippedWeapon;
 		this.equippedArmor = equippedArmor;
-		this.inCombat = inCombat;
-		this.monster = monster;
 	}
 
 
@@ -108,10 +107,11 @@ public class Player {
 		this.equippedArmor = equippedArmor;
 	}
 
-
+	/*
 	public boolean isInCombat() {
 		return inCombat;
 	}
+	*/
 	
 	public void addItem(Item item)
 	{
@@ -122,9 +122,77 @@ public class Player {
 	{
 		inventory.remove(item);
 	}
-
+	/*
 	public void setInCombat(boolean inCombat) {
 		this.inCombat = inCombat;
+	}
+
+	public Monster getMonster() {
+		return monster;
+	}
+
+	public void setMonster(Monster monster) {
+		this.monster = monster;
+	}
+	*/
+	public String getWeaponName() {
+		if(equippedWeapon != null)
+		{
+			return equippedWeapon.getItemName();
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	public void setWeaponName(String weaponName) {
+		this.weaponName = weaponName;
+	}
+
+	public String getArmorName() {
+		if(equippedArmor != null)
+		{
+			return equippedArmor.getItemName();
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	public void setArmorName(String armorName) {
+		this.armorName = armorName;
+	}
+
+	public String getWeaponValue() {
+		if(equippedWeapon != null)
+		{
+			return String.valueOf(equippedWeapon.getUseValue());
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	public void setWeaponValue(String weaponValue) {
+		this.weaponValue = weaponValue;
+	}
+
+	public String getArmorValue() {
+		if(equippedArmor != null)
+		{
+			return String.valueOf(equippedArmor.getUseValue());
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	public void setArmorValue(String armorValue) {
+		this.armorValue = armorValue;
 	}
 
 	public void examineInventory() {
@@ -170,7 +238,7 @@ public class Player {
 			if(monsterHP <= 0)
 			{
 				System.out.println("    You have defeated the " + monster.getMonsterName() + "!");
-				this.setInCombat(false);
+				//this.setInCombat(false);
 			}
 		}
 		else
@@ -187,7 +255,7 @@ public class Player {
 		if(escChance > 49)
 		{
 			System.out.println("    You escaped the monster!");
-			inCombat = false;
+			//inCombat = false;
 			return false;
 		}
 		else

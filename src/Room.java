@@ -113,10 +113,11 @@ public class Room {
 		this.puzzleID = puzzleID;
 	}
 
-
+	/*
 	public void setitemID(String[] itemID) {
 		this.itemID = itemID;
 	}
+	*/
 
 	/* Getter Methods */
 
@@ -151,9 +152,11 @@ public class Room {
 		return this.puzzleID;
 	}
 
+	/*
 	public String[] getitemID() {
 		return this.itemID;
 	}
+	*/
 
 	public String getFloor() {
 		return floor;
@@ -187,6 +190,14 @@ public class Room {
 		this.puzzle = puzzle;
 	}
 	
+	public String[] getItemID() {
+		return itemID;
+	}
+
+	public void setItemID(String[] itemID) {
+		this.itemID = itemID;
+	}
+
 	public boolean isWasVisitedPreviously() {
 		return wasVisitedPreviously;
 	}
