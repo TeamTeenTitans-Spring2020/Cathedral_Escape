@@ -34,9 +34,11 @@ what is happening in the cathedral.
 
 ## Map (Player Version)
 
-###Top Floor
+### Top Floor
 
 ![topfloorplayer](https://user-images.githubusercontent.com/27105173/80430104-aebb6500-88bb-11ea-9dae-5749a75c8d04.PNG)
 
 
+### First Floor
+![playerstuff](https://user-images.githubusercontent.com/27105173/80430254-1ec9eb00-88bc-11ea-8bbb-e81b5f751e55.PNG)
 
