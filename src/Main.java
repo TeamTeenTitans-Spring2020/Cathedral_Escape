@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -102,7 +103,8 @@ public class Main {
 					//System.out.println(puzzle.getDescription());
 					System.out.println(puzzle.getPuzzlePrompt());
 					int attempts = 3;
-					String[] solution = puzzle.getPuzzleSolution();
+					ArrayList<String> solution = puzzle.getPuzzleSolution();
+					//String[] solution = puzzle.getPuzzleSolution();
 					HashMap<String, String> solMap = new HashMap<String, String>();
 					for(String line : solution)
 					{

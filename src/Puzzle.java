@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 
 public class Puzzle {
 	// Creates attributes of the objects
@@ -6,14 +6,15 @@ public class Puzzle {
 	private String roomLocation;
 	private String puzzlePrompt;
 	private String puzzleHint;
-	private String[] puzzleSolution;//HashMap???
+	//private String[] puzzleSolution;//HashMap???
+	private ArrayList<String> puzzleSolution;
 	private int puzzleReward;
 	private int puzzleDamage;
 	private String itemID;
 	private Item item;
 	private boolean isSolved;
 	
-	public Puzzle(String puzzleID, String roomLocation, String puzzlePrompt, String puzzleHint, String[] puzzleSolution,
+	public Puzzle(String puzzleID, String roomLocation, String puzzlePrompt, String puzzleHint, ArrayList<String> puzzleSolution,
 			int puzzleReward, int puzzleDamage, String itemID, boolean isSolved) {
 		
 		this.puzzleID = puzzleID;
@@ -59,11 +60,11 @@ public class Puzzle {
 		this.puzzleHint = puzzleHint;
 	}
 
-	public String[] getPuzzleSolution() {
+	public ArrayList<String> getPuzzleSolution() {
 		return puzzleSolution;
 	}
 
-	public void setPuzzleSolution(String[] puzzleSolution) {
+	public void setPuzzleSolution(ArrayList<String> puzzleSolution) {
 		this.puzzleSolution = puzzleSolution;
 	}
 
