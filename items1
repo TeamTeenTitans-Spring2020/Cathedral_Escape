@@ -1,9 +1,0 @@
-4;Small Health Potion;A small Vial filled with a red liquid;Consumable;Use;10
-5;Medium Health Potion; A Red flask;Consumable;Use;25
-6;Large Health Potion;A Large Red flask;Consumable;Use;50
-9;Sword;A heavy sword;Weapon;Equip;10
-10;Silver Sword;An extra sharp sword clearly built for vampire hunting;Weapon;Equip;50
-12;Metal Shield;A heavy Shield that shines;Armor;Equip;5
-14;Metal Helmet;A light helmet made of an unidentified metal built for a Knight;Armor;Equip;5
-15;Vial of Holy Water;Small Clear vial of holy water;Buff;Use;5
-0;Bloodied Teddy Keychain;A reminder of the tragedy;Psychological Horror;Pickup;0
