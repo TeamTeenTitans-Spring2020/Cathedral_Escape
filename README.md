@@ -12,7 +12,7 @@ what is happening in the cathedral.
 
 
 ## Characters
-Through the Cathedral, there is no one here but monsters, ranging from a Human Skeleton, Undead Hound, Zombie to even a Vampire Queen. 
+Throughout the Cathedral, there is no one here but monsters, ranging from a Human Skeleton, Undead Hound, Zombie to even a Vampire Queen. 
 
 ## Game Commands
 | Command           | Description                                                                                                |
