@@ -28,4 +28,6 @@ what is happening in the cathedral.
 | Drop(item-name)   | Item is moved from player's inventory to the current room's inventory                                      |
 | Equip(item-name)  | Item's stats is added to the current player's stats                                                        |
 | Use(item-name)    | If item is in the player's inventory and a consumable, the item will be applied                            |                                                        | Attack            | When in combat mode, player can use this command to attack the monster until the monster's HP reaches zero |
+| W                 | Player will be able to traverse floors if they are at the stairs                                           |
+| E                 | Player will be able to traverse floors if they are at the stairs                                           |
 
