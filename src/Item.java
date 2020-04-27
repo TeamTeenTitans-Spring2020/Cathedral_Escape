@@ -109,10 +109,23 @@ public class Item {
 			{
 				System.out.println(this.itemName + " cannot be equipped. " + this.itemName + " is already equipped.");
 			}
+			else if((player.getEquippedWeapon() != null && this.itemType.equalsIgnoreCase("Weapon")))
+			{
+				System.out.println(this.getItemName() + " cannot be equipped. " + player.getWeaponName() + " is already equipped.");
+			}
+			else if((player.getEquippedArmor() != null && this.itemType.equalsIgnoreCase("Armor")))
+			{
+				System.out.println(this.getItemName() + " cannot be equipped. " + player.getArmorName() + " is already equipped.");
+			}
 			else if(this.itemType.equalsIgnoreCase("Weapon"))
 			{
-				player.setEquippedWeapon(this);
 				int initial = player.getAtkDmg();
+				int ten = 10;
+				if(initial - ten != 0)
+				{
+					initial = 10;
+				}
+				player.setEquippedWeapon(this);
 				int totalDmg = initial + this.useValue;
 				player.setAtkDmg(totalDmg);
 				System.out.println("    " + this.itemName + " has been equipped. Your Attack Damage increased to: " + totalDmg);
@@ -120,8 +133,7 @@ public class Item {
 			else if(this.itemType.equalsIgnoreCase("Armor"))
 			{
 				player.setEquippedArmor(this);
-				int initial = player.getDef();
-				int totalDef = initial + this.useValue;
+				int totalDef = this.useValue;
 				player.setDef(totalDef);
 				System.out.println("    " + this.itemName + " has been equipped. Your Defense has increased to: " + totalDef);
 			}
@@ -134,7 +146,11 @@ public class Item {
 	 */
 	public void unequipItem(Player player)
 	{
-		if(player.getEquippedArmor() != this || player.getEquippedWeapon() != this)
+		if(player.getEquippedWeapon() != this && this.getItemType().equalsIgnoreCase("Weapon"))
+		{
+			System.out.println(this.itemName + " cannot be unequipped because it's not currently equipped.");
+		}
+		else if(player.getEquippedArmor() != this && this.getItemType().equalsIgnoreCase("Armor"))
 		{
 			System.out.println(this.itemName + " cannot be unequipped because it's not currently equipped.");
 		}
@@ -207,6 +223,9 @@ public class Item {
 			{
 				Item item = player.getEquippedWeapon();
 				item.setUseValue(this.useValue + item.getUseValue());
+				System.out.println("    You used the " + this.getItemName() + "! Your " + item.getItemName() + " now has " + item.getUseValue() + " Atk.");
+				player.setAtkDmg(player.getAtkDmg() + item.getUseValue());
+				System.out.println("    Your total Atk is now " + player.getAtkDmg());
 				return true;
 			}
 		}

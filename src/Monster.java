@@ -84,9 +84,7 @@ public class Monster {
 	 * Player player- The Player the Monster is attacking
 	 * Allows the Monster to attack the Player. Looks at the Monster's atkDmg and subtracts it from the Player's current HP to determine the Player's remaining HP.
 	 */
-	//TO DO
-	//Return a boolean that shows if the player is dead/Alive???
-	public void monsterAtk(Player player, int monsterHP)
+	public int monsterAtk(Player player, int monsterHP)
 	{
 		if(monsterHP > 0)
 		{
@@ -94,7 +92,7 @@ public class Monster {
 			//System.out.println("Hit Num: " + hitNum);
 			if(hitNum > 9)
 			{
-				int dmg = this.atk;
+				int dmg = this.atk - player.getDef();
 				System.out.println("    The monster attacks you for " + dmg + " damage!");
 				player.setHp(player.getHp() - dmg);
 			}
@@ -114,6 +112,7 @@ public class Monster {
 				}
 				System.out.println("The Vampire Queen is regenerating her HP!");
 			}
+			return monsterHP;
 		}
 		else
 		{
@@ -128,6 +127,7 @@ public class Monster {
 			{
 				this.setHp(0);
 			}
+			return monsterHP;
 		}
 	}
 }

@@ -456,10 +456,10 @@ public class Main {
 			while(player.getHp() <= 0)
 			{
 				System.out.println("    You choke on your last breath as you see the last of your blood spill from your body. Game over.");
-				System.out.println("Would you like to 'Start' a new game, 'Load' a pre-existing save, or 'Exit' the game?");
+				System.out.println("Would you like to start a 'New Game', 'Load' a pre-existing save, or 'Exit' the game?");
 				command = m.input.nextLine();
 				String num = command.substring(command.length() - 1);
-				if(command.equalsIgnoreCase("Start"))
+				if(command.equalsIgnoreCase("New Game"))
 				{
 					//db = new Database();
 					//db = db.readFiles("");
@@ -505,10 +505,10 @@ public class Main {
 				
 				while(monster.getHp() <= 0)
 				{
-					System.out.println("    Would you like to 'Start' a new game, 'Load' a pre-existing save, or 'Exit' the game?");
+					System.out.println("    Would you like to start a 'New Game', 'Load' a pre-existing save, or 'Exit' the game?");
 					command = m.input.nextLine();
 					String num = command.substring(command.length() - 1);
-					if(command.equalsIgnoreCase("Start"))
+					if(command.equalsIgnoreCase("New Game"))
 					{
 						//db = new Database();
 						//db = db.readFiles("");

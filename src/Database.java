@@ -201,7 +201,7 @@ public class Database {
 			//readMonster int ID[0], name[1], desc[2], String[] room[3], int[] aprRate[4], droppedItem[5], int dropChance[6], int hp[7], int atk[8]
 			try
 			{
-				String file = "monsters" + fileNum;
+				String file = "monsters";
 				FileReader fr = new FileReader(file);
 				scan = new Scanner(fr);
 				while(scan.hasNextLine())

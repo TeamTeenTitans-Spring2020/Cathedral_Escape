@@ -221,8 +221,6 @@ public class Player {
 		}
 	}
 	
-	//BOOKMARK TO DO
-	//CREATE INDIVIDUAL EXAMINEITEM()
 	public void examineItem(int index) {
 		System.out.println("    " + this.getInventory().get(index).getItemDescription());
 	}
@@ -345,6 +343,11 @@ public class Player {
 				}
 			}
 			
+			else if(command.equalsIgnoreCase("Inspect") || command.equalsIgnoreCase("Inspect Inventory"))
+			{
+				this.examineInventory();
+			}
+			
 			else if (command.equalsIgnoreCase("Stat"))
 			{
 				this.printPlayerStats();
@@ -379,10 +382,10 @@ public class Player {
 					Item itemObject = db.getItemList().get(secondWord);
 					if(this.getInventory().contains(itemObject))
 					{
-						int index = this.getInventory().indexOf(secondWord);
+						int index = this.getInventory().indexOf(itemObject);
 						Item item = this.getInventory().get(index);
-						item.useItem(this);
-						successfulAction = true;
+						successfulAction = item.useItem(this);
+						//successfulAction = true;
 					}
 					else
 					{
@@ -398,7 +401,7 @@ public class Player {
 			}
 			if(successfulAction)
 			{
-				monster.monsterAtk(this, monsterHP);
+				monsterHP = monster.monsterAtk(this, monsterHP);
 			}
 			if(this.getHp() <= 0)
 			{
