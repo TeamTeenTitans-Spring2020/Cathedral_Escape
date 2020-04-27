@@ -31,10 +31,10 @@ what is happening in the cathedral.
 ## Game Commands
 | Command           | Description                                                                                                |
 | -----------       | -----------                                                                                                |
-| North/N           | Takes player to north of the current room if available                                                     |
-| South/S           | Takes player to south of the current room if available                                                     |
-| East/E            | Takes player to east of the current room if available                                                      |
-| West/W            | Takes player to west of the current room if available                                                      |
+| N                 | Takes player to north of the current room if available                                                     |
+| S                 | Takes player to south of the current room if available                                                     |
+| E                 | Takes player to east of the current room if available                                                      |
+| W                 | Takes player to west of the current room if available                                                      |
 | Save game         | The game session will be saved                                                                             |
 | Explore room      | Player will be able to if there are items, puzzles, or monsters in the current room                        |
 | Quit              | Player will be taken to the starting screen                                                                |
