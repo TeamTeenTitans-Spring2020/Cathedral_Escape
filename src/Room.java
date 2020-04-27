@@ -6,8 +6,6 @@ import java.util.Map.Entry;
 
 public class Room {
 	// Creates attributes of the objects
-	//BOOKMARK
-	//Add an ArrayList of exits???
 	private String roomID;
 	private String roomName;
 	private String roomDescription;
@@ -20,11 +18,9 @@ public class Room {
 	private boolean isCurrentRoom;
 	private String floor;
 	private HashMap<String, Item> inventory = new HashMap<String, Item>();
-	//private ArrayList<Item> inventory = new ArrayList<Item>();
 	private HashMap<String, Monster> monsterList = new HashMap<String, Monster>();
 	private Puzzle puzzle;
 	private boolean wasVisitedPreviously;
-	//Group all the rooms together by TopFloor, Bottom Floor, and stuff
 
 	// Empty Constructor
 	Room() {
@@ -53,7 +49,6 @@ public class Room {
 		}
 		this.floor = floor;
 		this.inventory = new HashMap<String, Item>();
-		//this.inventory = new ArrayList<Item>();
 		this.monsterList = new HashMap<String, Monster>();
 		this.puzzle = null;
 	}
@@ -74,7 +69,6 @@ public class Room {
 		this.isCurrentRoom = isThisCurrentRoom;
 		this.floor = floor;
 		this.inventory = new HashMap<String, Item>();
-		//this.inventory = new ArrayList<Item>();
 		this.monsterList = new HashMap<String, Monster>();
 		this.puzzle = null;
 	}
@@ -113,12 +107,6 @@ public class Room {
 		this.puzzleID = puzzleID;
 	}
 
-	/*
-	public void setitemID(String[] itemID) {
-		this.itemID = itemID;
-	}
-	*/
-
 	/* Getter Methods */
 
 	public String getRoomID() {
@@ -151,12 +139,6 @@ public class Room {
 	public String getpuzzleID() {
 		return this.puzzleID;
 	}
-
-	/*
-	public String[] getitemID() {
-		return this.itemID;
-	}
-	*/
 
 	public String getFloor() {
 		return floor;
@@ -209,13 +191,7 @@ public class Room {
 	public void addItem(Item item)
 	{
 		this.inventory.put(item.getItemName(), item);
-		//this.inventory.add(item);
 	}
-	/*
-	public void addItem(String name)
-	{
-		Item item = 
-	}*/
 	
 	public void removeItem(Item item)
 	{
@@ -232,7 +208,6 @@ public class Room {
 		this.monsterList.remove(monster.getMonsterName());
 	}
 	
-	//public LinkedList<String> getExits()
 	public HashMap<String, String> getExits()
 	{
 		//Getting exits so Navi Commands work
@@ -241,13 +216,6 @@ public class Room {
 		exits.put("S", this.getroomToTheSouth());
 		exits.put("E", this.getroomToTheEast());
 		exits.put("W", this.getroomToTheWest());
-		/*
-		LinkedList<String> rooms = new LinkedList<String>();
-		rooms.add(this.getroomToTheNorth());
-		rooms.add(this.getroomToTheSouth());
-		rooms.add(this.getroomToTheEast());
-		rooms.add(this.getroomToTheWest());
-		*/
 		return exits;
 	}
 	

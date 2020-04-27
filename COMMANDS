@@ -1,0 +1,32 @@
+This is a list of commands used in the game.
+You can use the commands "Help", "Command", or "Commands" to view this list in the game.
+
+Navigation Commands:
+	N or North			- Goes to the north room, if available.
+	S or South			- Goes to the south room, if available.
+	E or East			- Goes to the east room, if available.
+	W or West			- Goes to the west room, if available.
+
+Action Commands (Outside of Combat):
+    Explore Room		- Explores the Room's inventory (Not the Player's inventory) (Simply typing "Explore" is an alternative to this command)
+    Inspect Inventory	- Inspects the Player's inventory (Not the Room's inventory)
+    Inspect "Item Name"	- Inspects the description of an Item if it's either in the Room or Player's inventory.
+    Pickup "Item Name"	- Picks up the specified Item if it's in the Room's inventory.
+    Drop "Item Name"	- Drops the specified Item if it's currently in the Player's inventory.
+    Equip "Item Name"	- Equips the specified Item if it's currently in the Player's inventory (Only Armor and Weapons can be equipped).
+    Unequip "Item Name"	- Unequips the specified Item if it's currently being equipped by the Player (Only Armor and Weapons can be unequipped).
+    Use "Item Name"		- Uses the specified Item if it can be used (Only Consumables and Buffs can be used).
+    Stat				- Shows the Player's stats (HP, Atk, Def, Weapon, Armor)
+    New Game			- Starts a new game, resetting everything back to their original state and putting the player back at the start of the game.
+    Load"1, 2, or 3"	- Loads a saved game. (SAVE IS NOT YET FUNCTIONAL, SO THIS COMMAND IS OBSOLETE.)
+    Save"1, 2, or 3"	- Saves a game to files. (SAVE DOES NOT WORK AS INTENDED, SO THIS COMMAND IS OBSOLETE.)
+    Exit				- Exits the game.
+    
+Puzzle Commands:
+    "Type Input/Answer"	- Entering an input. If it matches one of the solutions, then the answer is right and the player is rewarded. If the answer is wrong, they are punished.
+	Skip				- Skips the Puzzle, and it cannot be attempted again until a new game is started.
+
+Combat Commands:
+	Stat and Use "Item Name" are valid commands while in combat.
+    Attack				- Attacks the monster.
+    Escape				- Attempts to escape the monster. Has a 50% chance of succeeding or failing. The monster will attack if the player if they fail to escape.
