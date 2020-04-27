@@ -174,7 +174,7 @@ public class Item {
 		else if(this.itemType.equalsIgnoreCase("Consumable"))
 		{
 			int playerhp = player.getHp();
-			if(playerhp == 100)
+			if(playerhp >= 100)
 			{
 				System.out.println("You didn't use " + this.itemName + ". You already have 100 HP. Healing now would be a waste.");
 				return false;

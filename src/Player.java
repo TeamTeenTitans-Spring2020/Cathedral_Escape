@@ -130,7 +130,7 @@ public class Player {
 			String items = "";
 			for(Item entry : inventory)
 			{
-				items = items + entry + ", ";
+				items = items + entry.getItemName() + ", ";
 			}
 			System.out.println("You have the following items in your inventory: " + items.substring(0, items.length() - 2));
 		}
@@ -139,7 +139,7 @@ public class Player {
 	public void attack(Monster monster)
 	{
 		int hitNum = (int)(Math.random() * 100);
-		System.out.println("Hit Num: " + hitNum);
+		//System.out.println("Hit Num: " + hitNum);
 		if(hitNum > 9)
 		{
 			System.out.println("You attack the monster for " + this.atkDmg + " damage!");
@@ -159,7 +159,7 @@ public class Player {
 	public boolean escape()
 	{
 		int escChance = (int)(Math.random() * 100);
-		System.out.println("Escape Roll (0 - 99): " + escChance);
+		//System.out.println("Escape Roll (0 - 99): " + escChance);
 		if(escChance > 49)
 		{
 			System.out.println("You escaped the monster!");
@@ -173,42 +173,29 @@ public class Player {
 		}
 	}
 	
-	//TO DO
-	//Should I put in Main for entering a Room/using Navigation commands???
-	public void enterRoom(Room room, Database db, Scanner input)
+	//public void enterRoom(Room room, Database db, Scanner input)
+	public Monster enterRoom(Room room, Database db, Scanner input)
 	{
+		System.out.println(currentRoom.getRoomName());
+		System.out.println(currentRoom.getRoomDescription());
 		//this.setCurrentRoom(room);
-		//boolean encounter = true;
-		//while(encounter)
-		//{
+		Monster monster = db.getMonsterList().get("Human Skeleton");
 		for(Entry<String, Monster> entry  : room.getMonsterList().entrySet())
 		{
-			Monster monster = entry.getValue();
+			monster = entry.getValue();
 			int index = 0;
-			/*
-				for(int i = 0; i < monster.getRoom().length; i++)
-				{
-					if(monster.getRoom()[i] == room.getRoomName())
-					{
-						index = i;
-						break;
-					}
-				}
-			 */
 			int encNum = (int)(Math.random() * 100);
-			System.out.println("Encounter Num: " + encNum);
+			//System.out.println("Encounter Num: " + encNum);
 			int monsterAprRate = monster.getAppearanceChance().get(index);
 			if(encNum <= monsterAprRate)
 			{
-				//TO DO
-				//FIND OUT WHAT TO DO HERE
 				this.combat(monster, db, input);
-				//encounter = false;
-				break;
+				return monster;
 			}
 		}
-		//}
+		return monster;
 	}
+	
 	public void printPlayerStats()
 	{
 		System.out.println("Player HP : " + this.getHp() + "        Player ATK: " + this.getAtkDmg() + "        Player DEF: " + this.getDef());
@@ -230,7 +217,8 @@ public class Player {
 		System.out.println("Weapon ATK: " + wAtk + "        Armor DEF: " + aDef);
 	}
 	
-	public void combat(Monster monster, Database db, Scanner input)
+	//public void combat(Monster monster, Database db, Scanner input)
+	public Monster combat(Monster monster, Database db, Scanner input)
 	{
 		boolean inCombat = true;
 		System.out.println("You encountered a " + monster.getMonsterName() + "!");
@@ -244,17 +232,7 @@ public class Player {
 			String command = input.nextLine();
 			if (command.equalsIgnoreCase("Attack"))
 			{
-				//monster = db.monsterList.get(currentRoom.getRoomID());
-				//monster = db.monsterList.get(currentRoom.getRoomID());
-				//monster = monsterMap.get(currentRoom.getRoomNum());
 				this.attack(monster);
-				monster.monsterAtk(this);
-				/*
-				if(monster.getHp() > 0)
-				{
-					monster.monsterAtk(this);
-				}
-				*/
 				if(monster.getHp() <= 0)
 				{
 					inCombat = false;
@@ -275,63 +253,7 @@ public class Player {
 				int spaceIndex = command.indexOf(" ");
 				String firstWord = command.substring(0, spaceIndex);
 				String secondWord = command.substring(spaceIndex + 1, command.length());
-				
-				if(firstWord.equalsIgnoreCase("Equip"))
-				{
-					Item itemObject = db.getItemList().get(secondWord);
-					//if(this.getInventory().contains(secondWord))
-					if(this.getInventory().contains(itemObject))
-					{
-						int index = this.getInventory().indexOf(secondWord);
-						Item item = this.getInventory().get(index);
-						item.equipItem(this);
-						successfulAction = true;
-					}
-					else
-					{
-						System.out.println("Failed to equip item. Either it is not in your inventory or was mistyped. If item was misspelled, make sure to spell it exactly\n"
-								+ "as it appears when typed in the 'Examine' description for the room or the 'Examine Inventory' description.");
-					}
-				}
-				else if(firstWord.equalsIgnoreCase("Unequip"))
-				{
-					Item itemObject = db.getItemList().get(secondWord);
-					//if(this.getInventory().contains(secondWord))
-					if(this.getInventory().contains(itemObject))
-					{
-						int index = this.getInventory().indexOf(secondWord);
-						Item item = this.getInventory().get(index);
-						item.unequipItem(this);
-						successfulAction = true;
-					}
-					else
-					{
-						System.out.println("Failed to unequip item. Either it is not in your inventory, not already equipped, or was mistyped. If item was misspelled, make\n"
-								+ "sure to spell it exactly as it appears when typed in the 'Examine' description for the room or the 'Examine Inventory' description.");
-					}
-				}
-				else if(firstWord.equalsIgnoreCase("Pickup"))
-				{
-					//int index = this.getInventory().indexOf(secondWord);
-					//Item item = this.getInventory().get(index);
-					//Item item = this.getInventory.get(secondWord);
-					//Pick up from Room's inventory
-					//if(this.getInventory().contains(secondWord))
-					Item itemObject = db.getItemList().get(secondWord);
-					//if(this.getInventory().contains(secondWord))
-					if(this.getCurrentRoom().getInventory().containsKey(secondWord))
-					{
-						Item item = db.getItemList().get(secondWord);
-						item.pickupItem(this, this.getCurrentRoom());
-						successfulAction = true;
-					}
-					else
-					{
-						System.out.println("Failed to pickup item. Either it is not in the room, doesn't exist, or was mistyped. If item was misspelled, make sure to spell it\n"
-								+ "exactly as it appears when typed in the 'Examine' description for the room or the 'Examine Inventory' description.");
-					}
-				}
-				else if(firstWord.equalsIgnoreCase("Use"))
+				if(firstWord.equalsIgnoreCase("Use"))
 				{
 					Item itemObject = db.getItemList().get(secondWord);
 					//if(this.getInventory().contains(secondWord))
@@ -359,5 +281,6 @@ public class Player {
 				monster.monsterAtk(this);
 			}
 		}
+		return monster;
 	}
 }

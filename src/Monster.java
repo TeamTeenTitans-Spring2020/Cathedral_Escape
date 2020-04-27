@@ -115,10 +115,10 @@ public class Monster {
 		else
 		{
 			int lootNum = (int)(Math.random() * 100);
-			System.out.println("Item Drop Number (0 - 99): " + lootNum);
+			//System.out.println("Item Drop Number (0 - 99): " + lootNum);
 			if(lootNum <= this.getItemDropChance())
 			{
-				System.out.println("You got a " + this.getItemDropped());
+				System.out.println("You got a " + this.getItemDropped().getItemName());
 				player.addItem(this.getItemDropped());
 			}
 		}
