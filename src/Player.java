@@ -8,7 +8,7 @@ public class Player {
 	//Create a Player.txt??? Allows you to see what the Player's Inventory is
 	
 	//HashMap<String, Item> inventory;
-	ArrayList<Item> inventory;//Read the String names. If the Weapon/Sword has a "," then setAtk to the int
+	ArrayList<Item> inventory;//Read the String names. If the Weapon/Sword has a "," then setAtk to the int (";" seperates the Items. "," seperates the Name and UseValue)
 	Room currentRoom;//Read this as an integer. It'll get the Room based on the Room Number
 	int hp;//Maximum hp Items can heal to is 100. However, Puzzles can give hp above 100.
 	int atkDmg;
@@ -32,7 +32,22 @@ public class Player {
 		this.equippedArmor = null;
 		this.inCombat = false;
 	}
-	
+
+	public Player(ArrayList<Item> inventory, Room currentRoom, int hp, int atkDmg, int def, Item equippedWeapon,
+			Item equippedArmor, boolean inCombat, Monster monster) {
+		super();
+		this.inventory = inventory;
+		this.currentRoom = currentRoom;
+		this.hp = hp;
+		this.atkDmg = atkDmg;
+		this.def = def;
+		this.equippedWeapon = equippedWeapon;
+		this.equippedArmor = equippedArmor;
+		this.inCombat = inCombat;
+		this.monster = monster;
+	}
+
+
 
 	public ArrayList<Item> getInventory() {
 		return inventory;
@@ -115,14 +130,14 @@ public class Player {
 	public void examineInventory() {
 		if(inventory.size() == 0)
 		{
-			System.out.println("You have no items in your inventory.");
+			System.out.println("    You have no items in your inventory.");
 		}
 		else if(inventory.size() == 1)
 		{
 			//for(Map.Entry<String, Item> entry : inventory.entrySet())
 			for(Item item : inventory)
 			{
-				System.out.println("You have a " + item.getItemName());
+				System.out.println("    You have a " + item.getItemName());
 			}
 		}
 		else
@@ -132,28 +147,31 @@ public class Player {
 			{
 				items = items + entry.getItemName() + ", ";
 			}
-			System.out.println("You have the following items in your inventory: " + items.substring(0, items.length() - 2));
+			System.out.println("    You have the following items in your inventory: " + items.substring(0, items.length() - 2));
 		}
 	}
 	
-	public void attack(Monster monster)
+	public int attack(Monster monster, int monsterHP)
 	{
 		int hitNum = (int)(Math.random() * 100);
 		//System.out.println("Hit Num: " + hitNum);
 		if(hitNum > 9)
 		{
 			System.out.println("You attack the monster for " + this.atkDmg + " damage!");
-			monster.setHp(monster.getHp() - this.atkDmg);
-			if(monster.getHp() <= 0)
+			//monster.setHp(monster.getHp() - this.atkDmg);
+			monsterHP -= this.atkDmg;
+			//if(monster.getHp() <= 0)
+			if(monsterHP <= 0)
 			{
-				System.out.println("You have defeated the " + monster.getMonsterName() + "!");
+				System.out.println("    You have defeated the " + monster.getMonsterName() + "!");
 				this.setInCombat(false);
 			}
 		}
 		else
 		{
-			System.out.println("You missed!");
+			System.out.println("    You missed!");
 		}
+		return monsterHP;
 	}
 	
 	public boolean escape()
@@ -162,13 +180,13 @@ public class Player {
 		//System.out.println("Escape Roll (0 - 99): " + escChance);
 		if(escChance > 49)
 		{
-			System.out.println("You escaped the monster!");
+			System.out.println("    You escaped the monster!");
 			inCombat = false;
 			return false;
 		}
 		else
 		{
-			System.out.println("You failed to escape!");
+			System.out.println("    You failed to escape!");
 			return true;
 		}
 	}
@@ -176,8 +194,10 @@ public class Player {
 	//public void enterRoom(Room room, Database db, Scanner input)
 	public Monster enterRoom(Room room, Database db, Scanner input)
 	{
-		System.out.println(currentRoom.getRoomName());
-		System.out.println(currentRoom.getRoomDescription());
+		//System.out.println(currentRoom.getRoomName());
+		//System.out.println(currentRoom.getRoomDescription());
+		System.out.println(this.getCurrentRoom().getRoomName());
+		System.out.println(this.getCurrentRoom().getRoomDescription());
 		//this.setCurrentRoom(room);
 		Monster monster = db.getMonsterList().get("Human Skeleton");
 		for(Entry<String, Monster> entry  : room.getMonsterList().entrySet())
@@ -213,27 +233,29 @@ public class Player {
 			armor = this.getEquippedArmor().getItemName();
 			aDef = String.valueOf(this.getEquippedArmor().getUseValue());
 		}
-		System.out.println("Equipped Weapon: " + weapon + "        Equipped Armor: " + armor);
-		System.out.println("Weapon ATK: " + wAtk + "        Armor DEF: " + aDef);
+		System.out.println("    Equipped Weapon: " + weapon + "        Equipped Armor: " + armor);
+		System.out.println("    Weapon ATK: " + wAtk + "        Armor DEF: " + aDef);
 	}
 	
 	//public void combat(Monster monster, Database db, Scanner input)
 	public Monster combat(Monster monster, Database db, Scanner input)
 	{
+		int monsterHP = monster.getHp();
 		boolean inCombat = true;
-		System.out.println("You encountered a " + monster.getMonsterName() + "!");
+		System.out.println("    You encountered a " + monster.getMonsterName() + "!");
 		System.out.println(monster.getMonsterDescription());
 		while(inCombat)
 		{
 			boolean successfulAction = false;
 			System.out.println("Player HP: " + this.getHp() + "        Player Atk: " + this.getAtkDmg());
-			System.out.println(monster.getMonsterName() + " HP: " + monster.getHp() + "        " + monster.getMonsterName() + " Atk: " + monster.getAtk());
+			//System.out.println(monster.getMonsterName() + " HP: " + monster.getHp() + "        " + monster.getMonsterName() + " Atk: " + monster.getAtk());
+			System.out.println(monster.getMonsterName() + " HP: " + monsterHP + "        " + monster.getMonsterName() + " Atk: " + monster.getAtk());
 			System.out.print("> ");
 			String command = input.nextLine();
 			if (command.equalsIgnoreCase("Attack"))
 			{
-				this.attack(monster);
-				if(monster.getHp() <= 0)
+				monsterHP = this.attack(monster, monsterHP);
+				if(monsterHP <= 0)
 				{
 					inCombat = false;
 				}
@@ -266,7 +288,7 @@ public class Player {
 					}
 					else
 					{
-						System.out.println("Failed to use item. Either it is not in your inventory, cannot be used, or was mistyped. If item was misspelled, make sure\n"
+						System.out.println("    Failed to use item. Either it is not in your inventory, cannot be used, or was mistyped. If item was misspelled, make sure\n"
 								+ "to spell it exactly as it appears when typed in the 'Examine' description for the room or the 'Examine Inventory' description.");
 					}
 				}
@@ -274,11 +296,11 @@ public class Player {
 			
 			else
 			{
-				System.out.println("Invalid input. You are in combat with " + monster.getMonsterName());
+				System.out.println("    Invalid input. You are in combat with " + monster.getMonsterName());
 			}
 			if(successfulAction)
 			{
-				monster.monsterAtk(this);
+				monster.monsterAtk(this, monsterHP);
 			}
 		}
 		return monster;

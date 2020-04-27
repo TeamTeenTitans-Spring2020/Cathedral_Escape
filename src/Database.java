@@ -131,7 +131,15 @@ public class Database {
 	}
 	
 	public void readFiles(String fileNum)
+	//public Database readFiles(String fileNum)
 	{
+		Database db = new Database();
+		itemList = new HashMap<String, Item>();
+		itemListNum = new HashMap<String, Item>();
+		monsterList = new HashMap<String, Monster>();
+		puzzleList = new HashMap<String, Puzzle>();//0 Puzzle doesn't exist
+		roomList = new HashMap<String, Room>();
+		//player = new Player(roomList.get("1"));
 		//readItems int itemID[0], name[1], desc[2], type[3], action[4], int value[5]
 		//Integer.parseInt(text[0])
 		//for(Map.Entry<String, Item> entry : itemList.entrySet())
@@ -413,16 +421,160 @@ public class Database {
 			//readPlayer
 			//ArrayList[0], String Room currentRoom[1], int hp[2], int atkDmg[3], int def[4], ;;;String[] Item equippedWeapon[5];;;, String<Item> equippedArmor[6],
 			//boolean inCombat[7], ;;;String[] Monster monster[8];;;
+			try
+			{
+				String file = "Player" + fileNum;
+				FileReader fr = new FileReader(file);
+				scan = new Scanner(fr);
+				while(scan.hasNextLine())
+				{
+					String items = scan.nextLine();
+					String roomNum = scan.nextLine();
+					int hp = Integer.parseInt(scan.nextLine());
+					int atk = Integer.parseInt(scan.nextLine());
+					int def = Integer.parseInt(scan.nextLine());
+					String weaponName = scan.nextLine();
+					String armorName = scan.nextLine();
+					boolean inCombat = Boolean.parseBoolean(scan.nextLine());
+					String monsterName = scan.nextLine();
+					
+					/*
+					System.out.println("Item: " + items);
+					System.out.println("Room num: " + roomNum);
+					System.out.println("HP: " + hp);
+					System.out.println("Atk: " + atk);
+					System.out.println("Def: " + def);
+					System.out.println("Weapon: " + weaponName);
+					System.out.println("Armor: " + armorName);
+					System.out.println("Is in combat: " + inCombat);
+					System.out.println("Monster: " + monsterName);
+					*/
+					
+					//HashMap<String, Item> inventory = new HashMap<String, Item>();
+					ArrayList<Item> inventory = new ArrayList<Item>();
+					
+					if(items.contains(";"))
+					{
+						String[] itemArray = items.split(";");
+						for(String line : itemArray)
+						{
+							if(!(items.contains(",")))
+							{
+								Item item = db.getItemList().get(line);
+								//inventory.add(item);
+								if(db.getItemList().containsKey(line))
+								{
+									inventory.add(item);
+								}
+								//inventory.put(items, item);
+							}
+							else
+							{
+								String[] lineArray2 = line.split(",");
+								//Item item = db.getItemList().get(lineArray2[0]);
+								//item.setUseValue(Integer.parseInt(lineArray2[1]));
+								//inventory.add(item);
+								if(db.getItemList().containsKey(items))
+								{
+									Item item = db.getItemList().get(lineArray2[0]);
+									item.setUseValue(Integer.parseInt(lineArray2[1]));
+									inventory.add(item);
+								}
+								//inventory.put(item.getItemName(), item);
+							}
+						}
+					}
+					else
+					{
+						if(!(items.contains(",")))
+						{
+							Item item = db.getItemList().get(items);
+							//inventory.add(item);
+							if(db.getItemList().containsKey(items))
+							{
+								inventory.add(item);
+							}
+							//inventory.put(item.getItemName(), item);
+						}
+						else
+						{
+							String[] lineArray2 = items.split(",");
+							//Item item = db.getItemList().get(lineArray2[0]);
+							//item.setUseValue(Integer.parseInt(lineArray2[1]));
+							//inventory.add(item);
+							if(db.getItemList().containsKey(items))
+							{
+								Item item = db.getItemList().get(lineArray2[0]);
+								item.setUseValue(Integer.parseInt(lineArray2[1]));
+								inventory.add(item);
+							}
+							//inventory.put(item.getItemName(), item);
+						}
+					}
+					
+					Room room = roomList.get(roomNum);
 
-
+					Item weapon = null;
+					if(weaponName.contains(","))
+					{
+						String[] weaponArray = items.split(";");
+						for(int i = 0; i < inventory.size(); i++)
+						{
+							if(inventory.get(i).getItemName().equals(weaponArray[0]))
+							{
+								weapon = inventory.get(i);
+								/*
+								weapon.setUseValue(Integer.parseInt(weaponArray[1]));
+								inventory.remove(i);
+								inventory.add(weapon);
+								*/
+								break;
+							}
+						}
+					}
+					
+					Item armor = null;
+					if(armorName.contains(","))
+					{
+						String[] armorArray = items.split(";");
+						for(int i = 0; i < inventory.size(); i++)
+						{
+							if(inventory.get(i).getItemName().equals(armorArray[0]))
+							{
+								armor = inventory.get(i);
+								/*
+								armor.setUseValue(Integer.parseInt(armorArray[1]));
+								inventory.remove(i);
+								inventory.add(armor);
+								*/
+								break;
+							}
+						}
+					}
+					
+					Monster monster = null;
+					if(monsterList.containsKey(monsterName))
+					{
+						monster = monsterList.get(monsterName);
+					}
+					
+					//this.player = new Player(inventory, room, hp, atk, def, weapon, armor, inCombat, monster);
+					player = new Player(inventory, room, hp, atk, def, weapon, armor, inCombat, monster);
+				}
+			}
+			catch(FileNotFoundException fr)
+			{
+				System.out.println("Failed to read Rooms");
+			}
+			
 			//System.out.println("Files read");
 		}
 		else
 		{
 			System.out.println("Unacceptable Load command. Please use command 'Load1', 'Load2', or 'Load3' to properly load saved data.");
 		}
-
-
+		
+		//return db;
 	}
 	
 	public void saveFiles(String fileNum)

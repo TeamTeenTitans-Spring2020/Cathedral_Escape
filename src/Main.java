@@ -29,12 +29,17 @@ public class Main {
 		Database db = new Database();
 		
 		db.readFiles("");
+		
 		int roomInt = 1;
 		int prevRoomInt = 0;
 		boolean loop = true;
 		Player player = db.getPlayer();
+		//System.out.println(player.getCurrentRoom().getRoomName());
 		boolean restarted = false;
 		
+		//RE-ENABLE THE Monster monster CODE BELOW SEVERAL LINES IF THIS DOESN'T HELP
+		Monster monster = db.getMonsterList().get("Human Skeleton");
+		Room currentRoom = player.getCurrentRoom();
 		do
 		{
 			if(restarted)
@@ -43,16 +48,24 @@ public class Main {
 				//System.out.println(player.getCurrentRoom().getRoomID());
 				player = db.getPlayer();
 				//System.out.println(player.getCurrentRoom().getRoomID());
-				System.out.println("Current room ID: " + player.getCurrentRoom().getRoomID());
+				//System.out.println("Current room ID: " + player.getCurrentRoom().getRoomID());
 				roomInt = Integer.parseInt(player.getCurrentRoom().getRoomID());
 				restarted = false;
+				currentRoom = player.getCurrentRoom();
+				monster = player.enterRoom(currentRoom, db, m.input);
 			}
 			//player.setCurrentRoom(roomMap.get(roomInt));
 			//player.setCurrentRoom(db.getRoomList().get(roomInt));
 			player.setCurrentRoom(db.getRoomList().get(String.valueOf(roomInt)));
 			
-			Room currentRoom = player.getCurrentRoom();
-			Monster monster = db.getMonsterList().get("Human Skeleton");
+			currentRoom = player.getCurrentRoom();
+			monster = db.getMonsterList().get("Human Skeleton");
+			//player.setCurrentRoom(currentRoom);
+			
+			//RE-ENABLE IF CODE GETS BUSTED
+			//Room currentRoom = player.getCurrentRoom();
+			//Monster monster = db.getMonsterList().get("Human Skeleton");
+			
 			boolean itemUsed = false;
 			
 			//System.out.println("Room Int: " + roomInt);
@@ -60,8 +73,14 @@ public class Main {
 			
 			if(roomInt != prevRoomInt)
 			{
+				//System.out.println(currentRoom.getRoomName());
+				if(!restarted)
+				{
+					monster = player.enterRoom(currentRoom, db, m.input);
+				}
+				restarted = false;
+				//monster = player.enterRoom(currentRoom, db, m.input);
 				
-				monster = player.enterRoom(currentRoom, db, m.input);
 				//System.out.println(currentRoom.getRoomName());
 				//System.out.println(currentRoom.getRoomDescription());
 				if(currentRoom.isWasVisitedPreviously())
@@ -148,7 +167,6 @@ public class Main {
 				
 				command = m.input.nextLine(); //The user input
 			}
-			
 			if(command.contains(" "))
 			{
 				int spaceIndex = command.indexOf(" ");
@@ -156,37 +174,41 @@ public class Main {
 				String secondWord = command.substring(spaceIndex + 1, command.length());
 				
 				//The Examine commands for Player inventory or Items
-				if(firstWord.equalsIgnoreCase("Eplore"))
+				if(firstWord.equalsIgnoreCase("Explore"))
 				{
-					//Exploring the Room's inventory. Can also be done simply by typing "Exploring"
+					//Exploring the Room's inventory. Can also be done simply by typing "Explore"
 					if(secondWord.equalsIgnoreCase("Room"))
 					{
-						
 						player.getCurrentRoom().examineInventory();
 						currentRoom.printMonsters();
 					}
-					//Examining the Player's inventory
-					else if(secondWord.equalsIgnoreCase("Inventory"))
-					{
-						player.examineInventory();
-					}
-					//Examining an Item in a Room's inventory
-					else if(currentRoom.getInventory().containsKey(secondWord))
-					{
-						currentRoom.getInventory().get(secondWord).examineItem();
-					}
 					
-					//Examining an Item in the Player's inventory
-					else if(player.getInventory().contains(secondWord))
-					{
-						int index = player.getInventory().indexOf(secondWord);
-						player.getInventory().get(index).examineItem();
-					}
 					//Failure message to let the user know what they may be typing wrong when using the 'Explore' command
 					else
 					{
 						System.out.println("Failed to explore. Either Item is not in the room, your inventory, or doesn't exist. If you misspelled the item, make sure,\n"
 								+ "to spell it exactly as it appears when typed in the 'Explore' description for the room or the 'Explore Inventory description.");
+					}
+				}
+				
+				if(firstWord.equalsIgnoreCase("Inspect"))
+				{
+					//Inspecting the Player's inventory
+					if(secondWord.equalsIgnoreCase("Inventory"))
+					{
+						player.examineInventory();
+					}
+					
+					//Inspecting an Item in the Player's inventory
+					else if(player.getInventory().contains(secondWord))
+					{
+						int index = player.getInventory().indexOf(secondWord);
+						player.getInventory().get(index).examineItem();
+					}
+					//Inspecting an Item in a Room's inventory
+					else if(currentRoom.getInventory().containsKey(secondWord))
+					{
+						currentRoom.getInventory().get(secondWord).examineItem();
 					}
 				}
 				
@@ -281,6 +303,11 @@ public class Main {
 				currentRoom.printMonsters();
 			}
 			
+			else if(command.equalsIgnoreCase("Inspect"))
+			{
+				player.examineInventory();
+			}
+			
 			//Command for looking at the player's hp and attack
 			else if (command.equalsIgnoreCase("Stat"))
 			{
@@ -292,13 +319,13 @@ public class Main {
 			{
 				
 			}
-			
+			/*
 			else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
 			{
 				String num = command.substring(command.length() - 1);
-				db.readFiles(num);
+				db = db.readFiles(num);
 			}
-			
+			*/
 			else if(command.equalsIgnoreCase("Exit"))
 			{
 				System.out.println("You have exited the game.");
@@ -308,14 +335,14 @@ public class Main {
 			if(command.equalsIgnoreCase("Start New Game"))
 			{
 				db = new Database();
-				db.readFiles("");
+				//db = db.readFiles("");
 				monster = db.getMonsterList().get(monster.getMonsterName());
 			}
 			else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
 			{
 				String num = command.substring(command.length() - 1);
 				db = new Database();
-				db.readFiles(num);
+				//db = db.readFiles(num);
 				monster = db.getMonsterList().get(monster.getMonsterName());
 			}
 			
@@ -395,12 +422,12 @@ public class Main {
 				if(command.equalsIgnoreCase("Start"))
 				{
 					db = new Database();
-					db.readFiles("");
+					//db = db.readFiles("");
 				}
 				else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
 				{
 					db = new Database();
-					db.readFiles(num);
+					//db = db.readFiles(num);
 				}
 				else if(command.equalsIgnoreCase("Exit"))
 				{
@@ -430,13 +457,15 @@ public class Main {
 					String num = command.substring(command.length() - 1);
 					if(command.equalsIgnoreCase("Start"))
 					{
-						db = new Database();
+						//db = new Database();
+						//db = db.readFiles("");
 						db.readFiles("");
 						monster = db.getMonsterList().get(monster.getMonsterName());
 					}
 					else if(command.equalsIgnoreCase("Load1") || command.equalsIgnoreCase("Load2") || command.equalsIgnoreCase("Load3"))
 					{
-						db = new Database();
+						//db = new Database();
+						//db = db.readFiles(num);
 						db.readFiles(num);
 						monster = db.getMonsterList().get(monster.getMonsterName());
 					}
@@ -452,6 +481,7 @@ public class Main {
 				}
 				restarted = true;
 			}
+			db.getMonsterList().get(monster.getMonsterName());
 	}while(loop);
 
 }
